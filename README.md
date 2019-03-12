@@ -1,6 +1,6 @@
 # IdentityServer4.Admin
 
-基于 IdentityServer4 开发的授权、用户管理、角色管理、权限管理
+基于 IdentityServer4 开发的授权、用户管理、角色管理
 
 | OS | Status |
 |---|---|
@@ -10,11 +10,11 @@
 
 #### Install Docker-CE
 
-1. Instann docker-ce follow offical document
+1. Install docker-ce follow official document
 
         https://docs.docker.com/install/
 
-2. *Change docker repositry to Ali docker repositry* because i only push to Ali repositry
+2. *Change docker repository to Ali docker repository* because i only push to Ali repository
 
 #### Prepare SqlServer
 
@@ -33,7 +33,7 @@ Then change `ConnectionString` to your database connection string in the appsett
         $ sudo docker pull registry.cn-shanghai.aliyuncs.com/zlzforever/ids4admin:latest
         $ sudo docker run -d --name ids4admin2 --restart always -e ADMIN_PASSWORD=1qazZAQ! -v ~/ids4admin2:/ids4admin2 -p 5566:7896 registry.cn-shanghai.aliyuncs.com/zlzforever/ids4admin /ids4admin2/appsettings.json
         
-#### Start from brower
+#### Start from browser
 
         http://localhost:7896
 
@@ -41,9 +41,21 @@ Then change `ConnectionString` to your database connection string in the appsett
 
 ### How to build the latest docker image
 
-Go to the source code folder(src/IdentityServer4.Admin) and run build.sh
+#### Prepare yarn
 
-        $ sh build.sh                     
++ Install yarn
+
+    https://yarn.bootcss.com/
+
++ Install js package
+
+    $ cd src/IdentityServer4.Admin
+    $ yarn install    
+    
+#### Execute build script
+    
+    $ cd src/IdentityServer4.Admin
+    $ sh build.sh                     
 
 ### Images
 

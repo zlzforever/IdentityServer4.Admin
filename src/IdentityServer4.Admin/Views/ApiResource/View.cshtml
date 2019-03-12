@@ -34,6 +34,26 @@
                             <span asp-validation-for="DisplayName" class="text-danger"></span>
                         </div>
                     </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea style="height: 100px" asp-for="Description" class="form-control" autocomplete="false" type="text"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>User Claims</label>
+                            <textarea style="height: 100px" asp-for="UserClaims" class="form-control" autocomplete="false" type="text"></textarea>
+                            <span asp-validation-for="UserClaims" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
                             <label>Enabled</label>
@@ -41,22 +61,6 @@
                                 <option value="True" selected="selected">True</option>
                                 <option value="False">False</option>
                             </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Description</label>
-                            <input asp-for="Description" class="form-control" autocomplete="false" type="text">
-                            <span asp-validation-for="Description" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>User Claims</label>
-                            <input asp-for="UserClaims" class="form-control" autocomplete="false" type="text">
-                            <span asp-validation-for="UserClaims" class="text-danger"></span>
                         </div>
                     </div>
                 </div>

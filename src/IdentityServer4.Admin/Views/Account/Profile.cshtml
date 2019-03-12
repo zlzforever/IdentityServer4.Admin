@@ -54,6 +54,8 @@
                             <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
                     </div>
+                </div>
+                <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
                             <label>LastName</label>
@@ -86,14 +88,6 @@
                                class="form-control" autocomplete="false" type="text">
                         <span asp-validation-for="Slogan" class="text-danger"></span>
                     </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label>Location</label>
-                            <input asp-for="Location"
-                                   class="form-control" autocomplete="false" type="text">
-                            <span asp-validation-for="Location" class="text-danger"></span>
-                        </div>
-                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-3">
@@ -114,6 +108,16 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
+                            <label>Location</label>
+                            <input asp-for="Location"
+                                   class="form-control" autocomplete="false" type="text">
+                            <span asp-validation-for="Location" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
                             <label>Sex</label>
                             <select asp-for="Sex" class="form-control select2" style="width: 100%;">
                                 <option value="Male" selected="selected">Male</option>
@@ -128,8 +132,6 @@
                                    class="form-control" autocomplete="false" disabled="disabled">
                         </div>
                     </div>
-                </div>
-                <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
                             <label>Title</label>
@@ -138,7 +140,9 @@
                             <span asp-validation-for="Title" class="text-danger"></span>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                </div>
+                <div class="row">
+                    <div class="col-md-9">
                         <div class="form-group">
                             <label>WebSite</label>
                             <input type="url" asp-for="WebSite"

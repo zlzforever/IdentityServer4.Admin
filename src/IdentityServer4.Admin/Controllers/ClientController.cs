@@ -1,8 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using IdentityServer4.Admin.Infrastructure;
 using IdentityServer4.Admin.ViewModels.Client;
+using IdentityServer4.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -47,9 +50,41 @@ namespace IdentityServer4.Admin.Controllers
             return View(queryResult);
         }
 
+        [Authorize(Roles = AdminConsts.AdminName)]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> ViewAsync(int id, string returnUrl)
+        {
+            var client = await _dbContext.Clients
+                .Include(x => x.AllowedGrantTypes)
+                .Include(x => x.RedirectUris)
+                .Include(x => x.PostLogoutRedirectUris)
+                .Include(x => x.AllowedScopes)
+                .Include(x => x.ClientSecrets)
+                .Include(x => x.Claims)
+                .Include(x => x.IdentityProviderRestrictions)
+                .Include(x => x.AllowedCorsOrigins)
+                .Include(x => x.Properties)
+                .AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
+            if (client == null)
+            {
+                return NotFound();
+            }
 
-        [HttpGet("{clientId}")]
-        public async Task<IActionResult> ViewAsync(int clientId, string returnUrl)
+            var viewModel = new ViewClientViewModel();
+            viewModel.AbsoluteRefreshTokenLifetime = client.AbsoluteRefreshTokenLifetime;
+            viewModel.AccessTokenLifetime = client.AccessTokenLifetime;
+            viewModel.AccessTokenType = (AccessTokenType) client.AccessTokenType;
+            viewModel.AllowAccessTokensViaBrowser = client.AllowAccessTokensViaBrowser;
+            viewModel.AllowedCorsOrigins = String.Join(";", client.AllowedCorsOrigins);
+            // viewModel.AllowedGrantTypes = client.AllowedGrantTypes.FirstOrDefault();
+            viewModel.IdentityProviderRestrictions = string.Join(";", client.IdentityProviderRestrictions);
+
+            ViewData["ReturnUrl"] = returnUrl;
+            return View("View", viewModel);
+        }
+
+        [HttpGet("{clientId}/detail")]
+        public async Task<IActionResult> DetailAsync(int clientId)
         {
             var client = await _dbContext.Clients
                 .Include(x => x.AllowedGrantTypes)
@@ -62,74 +97,91 @@ namespace IdentityServer4.Admin.Controllers
                 .Include(x => x.AllowedCorsOrigins)
                 .Include(x => x.Properties)
                 .AsNoTracking().FirstOrDefaultAsync(c => c.Id == clientId);
-            var dic = new Dictionary<string, object>();
-            dic.Add("Enabled", client.Enabled);
-            dic.Add("ClientId", client.ClientId);
-            dic.Add("ProtocolType", client.ProtocolType);
-            dic.Add("ClientSecrets",
-                client.ClientSecrets == null ? "" : string.Join("; ", client.ClientSecrets.Select(cs => cs.Value)));
-            dic.Add("RequireClientSecret", client.RequireClientSecret);
-            dic.Add("ClientName", client.ClientName);
-            dic.Add("Description", client.Description);
-            dic.Add("ClientUri", client.ClientUri);
-            dic.Add("LogoUri", client.LogoUri);
-            dic.Add("RequireConsent", client.RequireConsent);
-            dic.Add("AllowRememberConsent", client.AllowRememberConsent);
-            dic.Add("AlwaysIncludeUserClaimsInIdToken", client.AlwaysIncludeUserClaimsInIdToken);
-            dic.Add("AllowedGrantTypes",
-                client.AllowedGrantTypes == null
-                    ? ""
-                    : string.Join("; ", client.AllowedGrantTypes.Select(agt => agt.GrantType)));
-            dic.Add("RequirePkce", client.RequirePkce);
-            dic.Add("AllowPlainTextPkce", client.AllowPlainTextPkce);
-            dic.Add("AllowAccessTokensViaBrowser", client.AllowAccessTokensViaBrowser);
-            dic.Add("RedirectUris",
-                client.RedirectUris == null ? "" : string.Join("; ", client.RedirectUris.Select(t => t.RedirectUri)));
-            dic.Add("PostLogoutRedirectUris",
-                client.PostLogoutRedirectUris == null
-                    ? ""
-                    : string.Join("; ", client.PostLogoutRedirectUris.Select(t => t.PostLogoutRedirectUri)));
-            dic.Add("FrontChannelLogoutUri", client.FrontChannelLogoutUri);
-            dic.Add("FrontChannelLogoutSessionRequired", client.FrontChannelLogoutSessionRequired);
-            dic.Add("BackChannelLogoutUri", client.BackChannelLogoutUri);
-            dic.Add("BackChannelLogoutSessionRequired", client.BackChannelLogoutSessionRequired);
-            dic.Add("AllowOfflineAccess", client.AllowOfflineAccess);
-            dic.Add("AllowedScopes",
-                client.AllowedScopes == null ? "" : string.Join(" ", client.AllowedScopes.Select(t => t.Scope)));
-            dic.Add("IdentityTokenLifetime", client.IdentityTokenLifetime);
-            dic.Add("AccessTokenLifetime", client.AccessTokenLifetime);
-            dic.Add("AuthorizationCodeLifetime", client.AuthorizationCodeLifetime);
-            dic.Add("ConsentLifetime", client.ConsentLifetime);
-            dic.Add("AbsoluteRefreshTokenLifetime", client.AbsoluteRefreshTokenLifetime);
-            dic.Add("SlidingRefreshTokenLifetime", client.SlidingRefreshTokenLifetime);
-            dic.Add("RefreshTokenUsage", client.RefreshTokenUsage);
-            dic.Add("UpdateAccessTokenClaimsOnRefresh", client.UpdateAccessTokenClaimsOnRefresh);
-            dic.Add("RefreshTokenExpiration", client.RefreshTokenExpiration);
-            dic.Add("AccessTokenType", client.AccessTokenType == 0 ? "Jwt" : "Reference");
-            dic.Add("EnableLocalLogin", client.EnableLocalLogin);
-            dic.Add("IdentityProviderRestrictions",
-                client.IdentityProviderRestrictions == null
-                    ? ""
-                    : string.Join("; ", client.IdentityProviderRestrictions.Select(t => t.Provider)));
-            dic.Add("IncludeJwtId", client.IncludeJwtId);
-            dic.Add("Claims", client.Claims == null ? "" : string.Join("; ", client.Claims.Select(t => t.Value)));
-            dic.Add("AlwaysSendClientClaims", client.AlwaysSendClientClaims);
-            dic.Add("ClientClaimsPrefix", client.ClientClaimsPrefix);
-            dic.Add("PairWiseSubjectSalt", client.PairWiseSubjectSalt);
-            dic.Add("AllowedCorsOrigins",
-                client.AllowedCorsOrigins == null
-                    ? ""
-                    : string.Join("; ", client.AllowedCorsOrigins.Select(t => t.Origin)));
-            dic.Add("Properties",
-                client.Properties == null ? "" : string.Join("; ", client.Properties.Select(t => t.Value)));
-            dic.Add("Created", client.Created);
-            dic.Add("UserSsoLifetime", client.UserSsoLifetime);
-            dic.Add("UserCodeType", client.UserCodeType);
-            dic.Add("DeviceCodeLifetime", client.DeviceCodeLifetime);
+            if (client == null)
+            {
+                return NotFound();
+            }
 
-            ViewData["ReturnUrl"] = returnUrl;
+            var dic = new Dictionary<string, object>
+            {
+                {"Enabled", client.Enabled},
+                {"ClientId", client.ClientId},
+                {"ProtocolType", client.ProtocolType},
+                {
+                    "ClientSecrets",
+                    client.ClientSecrets == null ? "" : string.Join("; ", client.ClientSecrets.Select(cs => cs.Value))
+                },
+                {"RequireClientSecret", client.RequireClientSecret},
+                {"ClientName", client.ClientName},
+                {"Description", client.Description},
+                {"ClientUri", client.ClientUri},
+                {"LogoUri", client.LogoUri},
+                {"RequireConsent", client.RequireConsent},
+                {"AllowRememberConsent", client.AllowRememberConsent},
+                {"AlwaysIncludeUserClaimsInIdToken", client.AlwaysIncludeUserClaimsInIdToken},
+                {
+                    "AllowedGrantTypes", client.AllowedGrantTypes == null
+                        ? ""
+                        : string.Join("; ", client.AllowedGrantTypes.Select(agt => agt.GrantType))
+                },
+                {"RequirePkce", client.RequirePkce},
+                {"AllowPlainTextPkce", client.AllowPlainTextPkce},
+                {"AllowAccessTokensViaBrowser", client.AllowAccessTokensViaBrowser},
+                {
+                    "RedirectUris",
+                    client.RedirectUris == null ? "" : string.Join("; ", client.RedirectUris.Select(t => t.RedirectUri))
+                },
+                {
+                    "PostLogoutRedirectUris", client.PostLogoutRedirectUris == null
+                        ? ""
+                        : string.Join("; ", client.PostLogoutRedirectUris.Select(t => t.PostLogoutRedirectUri))
+                },
+                {"FrontChannelLogoutUri", client.FrontChannelLogoutUri},
+                {"FrontChannelLogoutSessionRequired", client.FrontChannelLogoutSessionRequired},
+                {"BackChannelLogoutUri", client.BackChannelLogoutUri},
+                {"BackChannelLogoutSessionRequired", client.BackChannelLogoutSessionRequired},
+                {"AllowOfflineAccess", client.AllowOfflineAccess},
+                {
+                    "AllowedScopes",
+                    client.AllowedScopes == null ? "" : string.Join(" ", client.AllowedScopes.Select(t => t.Scope))
+                },
+                {"IdentityTokenLifetime", client.IdentityTokenLifetime},
+                {"AccessTokenLifetime", client.AccessTokenLifetime},
+                {"AuthorizationCodeLifetime", client.AuthorizationCodeLifetime},
+                {"ConsentLifetime", client.ConsentLifetime},
+                {"AbsoluteRefreshTokenLifetime", client.AbsoluteRefreshTokenLifetime},
+                {"SlidingRefreshTokenLifetime", client.SlidingRefreshTokenLifetime},
+                {"RefreshTokenUsage", client.RefreshTokenUsage},
+                {"UpdateAccessTokenClaimsOnRefresh", client.UpdateAccessTokenClaimsOnRefresh},
+                {"RefreshTokenExpiration", client.RefreshTokenExpiration},
+                {"AccessTokenType", client.AccessTokenType == 0 ? "Jwt" : "Reference"},
+                {"EnableLocalLogin", client.EnableLocalLogin},
+                {
+                    "IdentityProviderRestrictions", client.IdentityProviderRestrictions == null
+                        ? ""
+                        : string.Join("; ", client.IdentityProviderRestrictions.Select(t => t.Provider))
+                },
+                {"IncludeJwtId", client.IncludeJwtId},
+                {"Claims", client.Claims == null ? "" : string.Join("; ", client.Claims.Select(t => t.Value))},
+                {"AlwaysSendClientClaims", client.AlwaysSendClientClaims},
+                {"ClientClaimsPrefix", client.ClientClaimsPrefix},
+                {"PairWiseSubjectSalt", client.PairWiseSubjectSalt},
+                {
+                    "AllowedCorsOrigins", client.AllowedCorsOrigins == null
+                        ? ""
+                        : string.Join("; ", client.AllowedCorsOrigins.Select(t => t.Origin))
+                },
+                {
+                    "Properties",
+                    client.Properties == null ? "" : string.Join("; ", client.Properties.Select(t => t.Value))
+                },
+                {"Created", client.Created},
+                {"UserSsoLifetime", client.UserSsoLifetime},
+                {"UserCodeType", client.UserCodeType},
+                {"DeviceCodeLifetime", client.DeviceCodeLifetime}
+            };
 
-            return View("View", dic);
+            return View("Detail", dic);
         }
     }
 }

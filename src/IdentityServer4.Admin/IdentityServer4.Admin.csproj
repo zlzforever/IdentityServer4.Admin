@@ -96,5 +96,8 @@
         <Compile Update="Controllers\Account.Logout.Controller.cs">
           <DependentUpon>AccountController.cs</DependentUpon>
         </Compile>
+        <Compile Update="Controllers\Client.Update.Controller.cs">
+          <DependentUpon>ClientController.cs</DependentUpon>
+        </Compile>
     </ItemGroup>
 </Project>

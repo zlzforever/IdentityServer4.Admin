@@ -20,14 +20,14 @@ function remove(userId) {
 
 function disable(userId) {
     swal({
-        title: "Sure to disable this user?",
+        title: "Sure to lock this user?",
         type: "warning",
         showCancelButton: true
     }, function () {
         app.put("/api/user/" + userId + '/disable', null, function () {
             window.location.reload();
         }, function () {
-            swal('Error', 'Disable failed', "error");
+            swal('Error', 'Lock failed', "error");
         });
     });
 }

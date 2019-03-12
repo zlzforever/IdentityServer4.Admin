@@ -49,8 +49,8 @@ Then change `ConnectionString` to your database connection string in the appsett
 
 + Install js package
 
-    $ cd src/IdentityServer4.Admin
-    $ yarn install    
+        $ cd src/IdentityServer4.Admin
+        $ yarn install    
     
 #### Execute build script
     

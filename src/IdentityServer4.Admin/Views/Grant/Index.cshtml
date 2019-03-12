@@ -1,0 +1,86 @@
+﻿@model IdentityServer4.Admin.ViewModels.Grants.GrantsViewModel
+
+@section breadcrumb{
+    <li >
+        <a href="#">Grant</a>
+    </li>
+}
+
+@section header{
+    Grant<small v-text="moduleDescription"></small>
+}
+
+<div class="col-xs-12">
+    <div class="box">
+        <!-- /.box-header -->
+        <div class="box-body table-responsive no-padding">
+            <table class="table table-bordered">
+                <tbody>
+                <tr>
+                    <th>#</th>
+                    <th>客户端</th>
+                    <th>授权时间</th>
+                    <th>过期时间</th>
+                    <th>Identity Grants</th>
+                    <th>API Grants</th>
+                    <th>注销</th>
+                </tr>
+                @if (Model.Grants.Any() == false)
+                {
+                    <tr>
+                        <td colspan="7">
+                            No data to display...
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (var grant in Model.Grants)
+                    {
+                        <tr>
+                            <td>
+                                @if (grant.ClientLogoUrl != null)
+                                {
+                                    <img src="@grant.ClientLogoUrl">
+                                }
+                            </td>
+                            <td>
+                                @grant.ClientName
+                            </td>
+                            <td>
+                                @grant.Created.ToString("yyyy-MM-dd")
+                            </td>
+                            <td>
+                                @grant.Expires?.ToString("yyyy-MM-dd")
+                            </td>
+                            <td>
+                                @string.Join(", ", grant.IdentityGrantNames)
+                            </td>
+                            <td>
+                                @string.Join(", ", grant.ApiGrantNames)
+                            </td>
+                            <td>
+                                <form asp-action="Revoke">
+                                    <input type="hidden" name="clientId" value="@grant.ClientId">
+                                    <button class="btn btn-sm  btn-flat btn-danger">注销</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                }
+                </tbody>
+            </table>
+        </div>
+        <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+</div>
+
+@section scripts{
+    <script>
+        $(function() {
+            app.activeMenu('Grant');
+        })
+    </script>
+
+}

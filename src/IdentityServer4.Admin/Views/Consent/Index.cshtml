@@ -1,0 +1,186 @@
+﻿@model IdentityServer4.Admin.ViewModels.Consent.ConsentViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>用户中心</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" asp-append-version="true">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="~/lib/Ionicons/css/ionicons.min.css" asp-append-version="true">
+    <!-- SweetAlert -->
+    <link rel="stylesheet" href="~/js/sweetalert/sweetalert.css" asp-append-version="true">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="~/lib/select2/dist/css/select2.min.css" asp-append-version="true">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/lib/admin-lte/dist/css/AdminLTE.min.css" asp-append-version="true">
+    <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
+    page. However, you can choose any other skin. Make sure you
+    apply the skin class to the body tag so the changes take effect. -->
+    <link rel="stylesheet" href="~/lib/admin-lte/dist/css/skins/_all-skins.min.css" asp-append-version="true">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true"/>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+    <!-- Main Header -->
+    <header class="main-header" style="background: #3c8dbc">
+        <a href="#" class="logo" style="background: #3c8dbc">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <span class="logo-mini"><b>用</b>户</span>
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg">
+                <b>授权确认</b>
+            </span>
+        </a>
+        <!-- Header Navbar -->
+        <nav class="navbar navbar-static-top" role="navigation">
+        </nav>
+    </header>
+
+    <div id="view">
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper" style="margin-left: 0; padding-top: 20px;">
+            <form asp-action="Index" style="margin-left: auto; margin-right: auto; width: 800px;">
+                <div class="box">
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label>@Model.ClientName</label>
+                                    将获得以下授权
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                @await Html.PartialAsync("_ValidationSummary")
+                                <input type="hidden" asp-for="ReturnUrl"/>
+                                @if (Model.IdentityScopes.Any())
+                                {
+                                    <div class="form-group panel panel-default">
+                                        <div class="panel-heading">
+                                            <span class="glyphicon glyphicon-user"></span>
+                                            个人信息
+                                        </div>
+                                        <ul class="list-group">
+                                            @foreach (var scope in Model.IdentityScopes)
+                                            {
+                                                @await Html.PartialAsync("_ScopeListItem", scope)
+                                            }
+                                        </ul>
+                                    </div>
+                                }
+                                @if (Model.ResourceScopes.Any())
+                                {
+                                    <div class="form-group panel panel-default">
+                                        <div class="panel-heading">
+                                            <span class="glyphicon glyphicon-tasks"></span>
+                                            应用权限
+                                        </div>
+                                        <ul class="list-group">
+                                            @foreach (var scope in Model.ResourceScopes)
+                                            {
+                                                @await Html.PartialAsync("_ScopeListItem", scope)
+                                            }
+                                        </ul>
+                                    </div>
+                                }
+                                @if (Model.AllowRememberConsent)
+                                {
+                                    <div>
+                                        <label>
+                                            <input class="icheck" asp-for="RememberConsent"/>
+                                            <strong>记住我的选择</strong>
+                                        </label>
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-footer clearfix">
+                        <button name="button" value="yes" class="btn btn-primary btn-sm  btn-flat" autofocus>授权</button>
+                        <button name="button" value="no" class="btn btn-default btn-sm  btn-flat">拒绝</button>
+                        @if (Model.ClientUrl != null)
+                        {
+                            <a class="pull-right btn btn-default" target="_blank" href="@Model.ClientUrl">
+                                <span class="glyphicon glyphicon-info-sign"></span>
+                                <strong>@Model.ClientName</strong>
+                            </a>
+                        }
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+            </form>
+        </div>
+        <!-- /.content-wrapper -->
+
+        <!-- Main Footer -->
+        <footer class="main-footer" style="margin-left: 0; margin-top: -20px;">
+            <!-- To the right -->
+            <div class="pull-right hidden-xs">
+            </div>
+            <!-- Default to the left -->
+            <strong>Copyright &copy; 2018-2019 <a href="https://github.com/zlzforever/IdentityServer4.Admin">IdentityServer4.Admin</a>.</strong> All rights reserved.
+        </footer>
+        <!-- /.control-sidebar -->
+        <!-- Add the sidebar's background. This div must be placed
+        immediately after the control sidebar -->
+        <div class="control-sidebar-bg">
+        </div>
+    </div>
+</div>
+<!-- ./wrapper -->
+
+<!-- REQUIRED JS SCRIPTS -->
+<!-- jQuery 3 -->
+<script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="~/lib/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true"></script>
+<!-- AdminLTE App -->
+<script src="~/lib/admin-lte/dist/js/adminlte.min.js" asp-append-version="true"></script>
+<!-- SweetAlert -->
+<script src="~/js/sweetalert/sweetalert.min.js" asp-append-version="true"></script>
+<!-- Select2 -->
+<script src="~/lib/select2/dist/js/select2.full.min.js" asp-append-version="true"></script>
+<!-- Page -->
+<script src="~/lib/twbs-pagination/jquery.twbsPagination.min.js" asp-append-version="true"></script>
+<!-- VUE -->
+<script src="~/lib/vue/dist/vue.min.js" asp-append-version="true"></script>
+<!-- IdentityServer4.Admin -->
+<script src="~/js/app.min.js" asp-append-version="true"></script>
+
+<script src="~/lib/admin-lte/plugins/iCheck/icheck.min.js" asp-append-version="true"></script>
+<environment names="Development">
+    <script src="~/js/consent.js" asp-append-version="true"></script>
+</environment>
+<environment names="Staging,Production">
+    <script src="~/js/consent.min.js" asp-append-version="true"></script>
+</environment>
+
+<!-- Optionally, you can add Slimscroll and FastClick plugins.
+Both of these plugins are recommended to enhance the
+user experience. -->
+<script>
+    $(function() {
+        app.activeMenu('Consent');
+    })
+</script>
+
+</body>
+</html>

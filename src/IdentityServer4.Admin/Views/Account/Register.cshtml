@@ -1,0 +1,84 @@
+@using IdentityServer4.Admin.Infrastructure
+@{
+    Layout = "_FrameworkLayout";
+}
+
+@inject AdminOptions Options;
+@model IdentityServer4.Admin.ViewModels.Account.RegisterViewModel
+
+@section title{
+    <title>@Options.SiteName | 注册</title>
+}
+
+@section css{
+    <style>
+        body {
+            font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-weight: 400;
+            font-size: 12px;
+            background: #d2d6de
+        }
+    </style>
+}
+
+<div class="register-box">
+    <div class="register-logo">
+        <a >@Options.SiteName</a>
+    </div>
+    <div class="register-box-body">
+        @await Html.PartialAsync("_ValidationSummary")
+        <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+            <div class="form-group has-feedback">
+                <input asp-for="UserName" type="text" class="form-control">
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input asp-for="Password" class="form-control">
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input asp-for="ConfirmPassword" type="password" class="form-control">
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div class="row form-group has-feedback">
+                <div class="col-md-8">
+                    <input asp-for="VerificationCode" type="text" class="form-control">
+                    <span asp-validation-for="VerificationCode" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <img class="pull-left" src="/verificationcode/new" alt="看不清?" onclick="this.src = '/verificationcode/new?_=' + Math.round(new Date().getTime());" style="vertical-align: middle;"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-8">
+                    <div class="checkbox icheck">
+                        <label>
+                            <input asp-for="AgreeTerms" type="checkbox"> 同意 <a href="#">网站条款</a>
+                            <span asp-validation-for="AgreeTerms" class="text-danger"></span>
+                        </label>
+                    </div>
+                </div>
+                <!-- /.col -->
+                <div class="col-xs-4">
+                    <button type="submit" class="btn btn-primary btn-block btn-flat">注册</button>
+                </div>
+                <!-- /.col -->
+            </div>
+        </form>
+
+        <div class="social-auth-links text-center">
+            <p>- OR -</p>
+            <a href="#" class="btn btn-block btn-social btn-facebook btn-flat">
+                <i class="fa fa-facebook"></i> Sign up using
+                Facebook
+            </a>
+            <a href="#" class="btn btn-block btn-social btn-google btn-flat">
+                <i class="fa fa-google-plus"></i> Sign up using
+                Google+
+            </a>
+        </div>
+
+        <a href="/Account/Login" class="text-center">已有帐户</a>
+    </div>
+    <!-- /.form-box -->
+</div>

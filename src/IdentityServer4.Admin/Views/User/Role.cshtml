@@ -1,0 +1,111 @@
+﻿@model  IdentityServer4.Admin.ViewModels.User.ViewUserRoleViewModel
+
+@section breadcrumb{
+    <li >
+        <a href="#">User Role</a>
+    </li>
+}
+
+@section header{
+    User Role<small v-text="moduleDescription"></small>
+}
+
+<div class="col-xs-12">
+    <input type="hidden" id="userId" value="@ViewData["UserId"]"/>
+    <div class="box">
+        <div class="box-header">
+            <div class="box-header"></div>
+            <div class="box-tools">
+                <a class="btn btn-default btn-sm  btn-flat" data-toggle="modal" data-target="#add-role">Add</a>
+            </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body table-responsive no-padding">
+            <table class="table table-bordered">
+                <tbody>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                </tr>
+                @if (Model?.UserRoles == null || !Model.UserRoles.Any())
+                {
+                    <tr >
+                        <td colspan="3">
+                            None
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (var role in Model.UserRoles)
+                    {
+                        <tr >
+                            <td>
+                                <span>@role.Name</span>
+                            </td>
+                            <td>
+                                <span>@role.Description</span>
+                            </td>
+                            <td>
+                                <a class="btn btn-default btn-sm  btn-flat" onclick="remove('@role.Id')">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- /.box -->
+</div>
+<div class="modal fade" id="add-role" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content" style="min-width: 700px">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">Add role</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <select class="form-control select2" style="width: 100%;">
+
+                                @if (Model?.AvailableRoles != null && Model.AvailableRoles.Any())
+                                {
+                                    foreach (var role in Model.AvailableRoles)
+                                    {
+                                        <option value="@role.Name">@role.Name</option>
+                                    }
+                                }
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm  btn-flat" data-dismiss="modal" onclick="addRole()">Submit</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+@section scripts{
+    <environment names="Development">
+        <script src="~/js/userRole.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/userRole.min.js" asp-append-version="true"></script>
+    </environment>
+    <script>
+        $(function() {
+            app.activeMenu('User');
+        })
+    </script>
+}

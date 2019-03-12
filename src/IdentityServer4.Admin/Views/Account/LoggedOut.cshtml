@@ -1,0 +1,73 @@
+﻿@using IdentityServer4.Admin.Infrastructure
+@model IdentityServer4.Admin.ViewModels.Account.LoggedOutViewModel
+@{
+    Layout = null;
+    // set this so the layout rendering sees an anonymous user
+    ViewData["signed-out"] = true;
+}
+@inject AdminOptions Options;
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>@Options.SiteName | 登出</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" asp-append-version="true">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="~/lib/ionicons/dist/css/ionicons.min.css" asp-append-version="true">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/lib/admin-lte/dist/css/AdminLTE.min.css" asp-append-version="true">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="~/lib/admin-lte/plugins/iCheck/square/blue.css" asp-append-version="true">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body class="hold-transition login-page">
+<div class="login-box">
+    <h1>
+        退出成功
+    </h1>
+
+    @if (Model.PostLogoutRedirectUri != null)
+    {
+        <div>
+            点击 <a class="PostLogoutRedirectUri" href="@Model.PostLogoutRedirectUri">@Model.ClientName</a> 返回
+        </div>
+    }
+    else if (Model.SignOutIframeUrl != null)
+    {
+        <iframe width="0" height="0" class="signout" src="@Model.SignOutIframeUrl"></iframe>
+    }
+    <div>
+        点击 <a class="PostLogoutRedirectUri" href="/">用户中心</a> 返回
+    </div>
+</div>
+<!-- /.login-box -->
+
+<!-- jQuery 3 -->
+<script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+<!-- Bootstrap -->
+<script src="~/lib/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true"></script>
+
+@if (Model.AutomaticRedirectAfterSignOut)
+{
+    <environment names="Development">
+        <script src="~/js/signout-redirect.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/signout-redirect.min.js" asp-append-version="true"></script>
+    </environment>
+}
+
+</body>
+</html>

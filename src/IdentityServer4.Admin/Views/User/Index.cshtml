@@ -1,0 +1,147 @@
+﻿@model IdentityServer4.Admin.ViewModels.User.ListUserViewModel
+@using X.PagedList.Mvc.Common
+@using X.PagedList.Mvc.Core
+@{
+    var returnUrl = string.Concat("/user", Context.Request.QueryString);
+}
+
+@section breadcrumb{
+    <li >
+        <a href="#">User</a>
+    </li>
+}
+
+@section header{
+    User<small v-text="moduleDescription"></small>
+}
+
+<div class="col-xs-12">
+    <div class="box">
+        <div class="box-header">
+            <div class="box-title">
+                <div class="input-group input-group-sm" style="width: 200px;">
+                    <input id="Keyword" type="text" class="form-control pull-right" placeholder="username | email" value="@Model.Keyword">
+                    <div class="input-group-btn">
+                        <button id="Search" type="submit" class="btn btn-default btn-sm  btn-flat">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="box-tools" style="padding: 5px">
+                <a class="btn btn-default btn-sm  btn-flat" href="/user/create?returnUrl=@returnUrl">Create</a>
+            </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body table-responsive no-padding">
+            <table class="table table-bordered">
+                <tbody>
+                <tr>
+                    <th>UserName</th>
+                    <th>Email</th>
+                    <th>Name</th>
+                    <th>Role</th>
+                    <th>Phone</th>
+                    <th>LockedOut</th>
+                    <th>Action</th>
+                </tr>
+                @if (Model.Users == null || !Model.Users.Any())
+                {
+                    <tr>
+                        <td colspan="7">
+                            None
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (var user in Model.Users)
+                    {
+                        <tr>
+                            <td>
+                                <span>@user.UserName</span>
+                            </td>
+                            <td>
+                                <span >@user.Email</span>
+                            </td>
+                            <td>
+                                <span >@string.Concat(@user.LastName, user.FirstName)</span>
+                            </td>
+                            <td>
+                                <span>@user.Roles</span>
+                            </td>
+                            <td>
+                                <span >@user.PhoneNumber</span>
+                            </td>
+                            <td>
+                                @if (user.IsLockedOut)
+                                {
+                                    <span class="text-danger">Locked</span>
+                                }
+                                else
+                                {
+                                    <span class="text-success">Normal</span>
+                                }
+
+                            </td>
+                            <td style="max-width: 200px;">
+                                <a class="btn btn-default btn-sm  btn-flat" href="/user/@user.Id?returnUrl=@returnUrl">View</a>
+                                @if (user.UserName != "admin")
+                                {
+                                    if (user.IsLockedOut)
+                                    {
+                                        <a class="btn btn-default btn-sm  btn-flat" onclick="enable('@user.Id')">Unlock</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="btn btn-default btn-sm  btn-flat" onclick="disable('@user.Id')">Lock</a>
+                                    }
+                                    <a class="btn btn-default btn-sm  btn-flat" onclick="remove('@user.Id')">Delete</a>
+                                    <a class="btn btn-default btn-sm  btn-flat" href="/user/@user.Id/role">Role</a>
+                                    <a class="btn btn-default btn-sm  btn-flat" href="/user/@user.Id/set-password">Set password</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+                </tbody>
+            </table>
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer clearfix no-border">
+            @if (Model.Users != null && Model.Users.PageCount > 1)
+            {
+                @Html.PagedListPager(Model.Users, page => Url.Action("Index", new {page, q = Model.Keyword}),
+                    new PagedListRenderOptions
+                    {
+                        DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+                        DisplayLinkToLastPage = PagedListDisplayMode.Always,
+                        DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                        LinkToFirstPageFormat = "First",
+                        LinkToLastPageFormat = "Last",
+                        LinkToPreviousPageFormat = "Previous",
+                        LinkToNextPageFormat = "Next",
+                        ContainerDivClasses = new string[0],
+                        UlElementClasses = new[] {"pagination pagination-sm no-margin pull-left"},
+                        LiElementClasses = new[] {"page-item"},
+                        PageClasses = new[] {"page-link"}
+                    })
+            }
+        </div>
+    </div>
+    <!-- /.box -->
+</div>
+
+@section scripts{
+    <environment names="Development">
+        <script src="~/js/user.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/user.min.js" asp-append-version="true"></script>
+    </environment>
+    <script>
+        $(function() {
+            app.activeMenu('User');
+        })
+    </script>
+}

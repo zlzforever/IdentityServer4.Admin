@@ -1,0 +1,98 @@
+@model List<IdentityServer4.Admin.ViewModels.ApiResource.ListApiResourceScopeViewModel>
+
+@section breadcrumb{
+    <li >
+        <a href="/api-resource">API Resource</a>
+    </li>
+    <li >
+        <a href="#">API Resource Scope</a>
+    </li>
+}
+
+@section header{
+    API Resource Scope<small v-text="moduleDescription"></small>
+}
+
+<div class="col-xs-12">
+    <div class="box">
+        <div class="box-header">
+            <div class="box-title">
+            </div>
+            <div class="box-tools">
+                <a class="btn btn-default btn-sm  btn-flat" href="@Context.Request.Path/create">Create</a>
+            </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body table-responsive no-padding">
+            <table class="table table-bordered">
+                <tbody>
+                <tr>
+                    <th>Name</th>
+                    <th>DisplayName</th>
+                    <th>Required</th>
+                    <th>Emphasize</th>
+                    <th style="max-width: 200px">UserClaims</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                </tr>
+                @if (Model == null || !Model.Any())
+                {
+                    <tr>
+                        <td colspan="8">
+                            None
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <span>@item.Name</span>
+                            </td>
+                            <td>
+                                <span >@item.DisplayName</span>
+                            </td>
+                            <td>
+                                <span >@item.Required</span>
+                            </td>
+                            <td>
+                                <span >@item.Emphasize</span>
+                            </td>
+                            <td style="max-width: 250px">
+                                <span >@item.UserClaims</span>
+                            </td>
+                            <td>
+                                <span >@item.Description</span>
+                            </td>
+                            <td>
+                                <a class="btn btn-default btn-sm  btn-flat" href="@Context.Request.Path/@item.Id">View</a>
+                                <a class="btn btn-default btn-sm  btn-flat" onclick="remove('@ViewData["ApiResourceId"]', '@item.Id')">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                }
+                </tbody>
+            </table>
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer clearfix no-border">
+        </div>
+    </div>
+    <!-- /.box -->
+</div>
+
+@section scripts{
+    <environment names="Development">
+        <script src="~/js/apiResourceScope.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/apiResourceScope.min.js" asp-append-version="true"></script>
+    </environment>
+    <script>
+        $(function() {
+            app.activeMenu('ApiResource');
+        })
+    </script>
+}

@@ -1,0 +1,110 @@
+﻿@using X.PagedList.Mvc.Common
+@using X.PagedList.Mvc.Core
+@model X.PagedList.IPagedList<IdentityServer4.Admin.ViewModels.Client.ListClientItemViewModel>
+@{
+    var returnUrl = string.Concat("/client", Context.Request.QueryString);
+}
+@section breadcrumb{
+    <li >
+        <a href="#">Client</a>
+    </li>
+}
+
+@section header{
+    Client<small v-text="moduleDescription"></small>
+}
+
+<div class="col-xs-12">
+    <div class="box">
+        <div class="box-header">
+            <div class="box-title">
+                Client
+            </div>
+            <div class="box-tools">
+                <a class="btn btn-default btn-sm  btn-flat" href="/client/create?returnUrl=@returnUrl">Create</a>
+            </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body table-responsive no-padding">
+            <table class="table table-bordered">
+                <tbody>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>GrantType</th>
+                    <th>Scope</th>
+                    <th>Action</th>
+                </tr>
+                @if (Model == null || !Model.Any())
+                {
+                    <tr>
+                        <td colspan="5">
+                            None
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <span>@item.ClientId</span>
+                            </td>
+                            <td>
+                                <span>@item.ClientName</span>
+                            </td>
+                            <td>
+                                <span>@item.AllowedGrantTypes</span>
+                            </td>
+                            <td>
+                                <span>@item.AllowedScopes</span>
+                            </td>
+                            <td>
+                                <a class="btn btn-default btn-sm  btn-flat" href="/client/@item.Id?returnUrl=@returnUrl">View</a>
+                                <a class="btn btn-default btn-sm  btn-flat" onclick="remove('@item.Id')">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                }
+                </tbody>
+            </table>
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer clearfix no-border">
+            @if (Model != null && Model.PageCount > 1)
+            {
+                @Html.PagedListPager(Model, page => Url.Action("Index", new {page}),
+                    new PagedListRenderOptions
+                    {
+                        DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+                        DisplayLinkToLastPage = PagedListDisplayMode.Always,
+                        DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                        LinkToFirstPageFormat = "First",
+                        LinkToLastPageFormat = "Last",
+                        LinkToPreviousPageFormat = "Previous",
+                        LinkToNextPageFormat = "Next",
+                        ContainerDivClasses = new string[0],
+                        UlElementClasses = new[] {"pagination pagination-sm no-margin pull-left"},
+                        LiElementClasses = new[] {"page-item"},
+                        PageClasses = new[] {"page-link"}
+                    })
+            }
+        </div>
+    </div>
+    <!-- /.box -->
+</div>
+
+@section scripts{
+    <environment names="Development">
+        <script src="~/js/client.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/client.min.js" asp-append-version="true"></script>
+    </environment>
+    <script>
+        $(function() {
+            app.activeMenu('Client');
+        })
+    </script>
+}

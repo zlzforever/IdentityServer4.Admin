@@ -1,0 +1,165 @@
+@model IdentityServer4.Admin.ViewModels.Diagnostics.DiagnosticsViewModel
+@section breadcrumb{
+    <li >
+        <a href="#">Diagnostics</a>
+    </li>
+}
+
+@section header{
+    Diagnostics<small v-text="moduleDescription"></small>
+}
+<div class="col-xs-12">
+    <div class="box">
+        <div class="box-header">
+            <div class="box-title">
+                Claims
+            </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body table-responsive no-padding">
+            <table class="table table-bordered">
+                <tbody>
+                @{
+                    int claimsCount = Model.AuthenticateResult.Principal.Claims.Count();
+                    int column = 3;
+                    int row = claimsCount / column;
+                    if (row == 0)
+                    {
+                        row = 1;
+                    }
+                    else
+                    {
+                        row = row + (claimsCount % column != 0 ? 1 : 0);
+                    }
+                    for (int i = 0; i < row; i++)
+                    {
+                        <tr>
+                            @for (int j = 0; j < column; ++j)
+                            {
+                                int index = i * column + j;
+                                if (index < claimsCount)
+                                {
+                                    var claim = Model.AuthenticateResult.Principal.Claims.ElementAt(index);
+                                    <td>
+                                        <strong>@claim.Type</strong>
+                                    </td>
+                                    <td>@claim.Value</td>
+                                    <td></td>
+                                }
+                            }
+                        </tr>
+                    }
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- /.box -->
+</div>
+<div class="col-xs-12">
+    <div class="box" id="view">
+        <div class="box-header">
+            <div class="box-title">
+                Properties
+            </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body table-responsive no-padding">
+            <table class="table table-bordered">
+                <tbody>
+                @{
+                    int propertyCount = Model.AuthenticateResult.Properties.Items.Count;
+                    int propertyColumn = 3;
+                    int propertyRow = propertyCount / propertyColumn;
+                    if (propertyRow == 0)
+                    {
+                        propertyRow = 1;
+                    }
+                    else
+                    {
+                        propertyRow = propertyRow + (propertyCount % propertyColumn != 0 ? 1 : 0);
+                    }
+
+                    propertyRow = propertyRow == 0 ? 1 : propertyRow;
+                    for (int i = 0; i < propertyRow; i++)
+                    {
+                        <tr>
+                            @for (int j = 0; j < propertyColumn; ++j)
+                            {
+                                var index = i * propertyColumn + j;
+                                if (index < propertyCount)
+                                {
+                                    var prop = Model.AuthenticateResult.Properties.Items.ElementAt(i * propertyColumn + j);
+                                    <td>
+                                        <strong>@prop.Key</strong>
+                                    </td>
+                                    <td>@prop.Value</td>
+                                    <td></td>
+                                }
+                            }
+                        </tr>
+                    }
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- /.box -->
+</div>
+<div class="col-xs-12">
+    <div class="box" id="view">
+        <div class="box-header">
+            <div class="box-title">
+                Clients
+            </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body table-responsive no-padding">
+            <table class="table table-bordered">
+                <tbody>
+                @{
+                    int clientCount = Model.Clients.Count();
+                    int clientColumn = 3;
+                    int clientRow = clientCount / clientColumn;
+                    if (clientRow == 0)
+                    {
+                        clientRow = 1;
+                    }
+                    else
+                    {
+                        clientRow = clientRow + (clientCount % clientColumn != 0 ? 1 : 0);
+                    }
+                    for (int i = 0; i < clientRow; i++)
+                    {
+                        <tr>
+                            @for (int j = 0; j < clientColumn; ++j)
+                            {
+                                var index = i * clientColumn + j;
+                                if (index < clientCount)
+                                {
+                                    var client = Model.Clients.ElementAt(index);
+                                    <td>
+                                        <strong>@client</strong>
+                                    </td>
+                                    <td></td>
+                                }
+                            }
+                        </tr>
+                    }
+                }
+                </tbody>
+            </table>
+        </div>
+        <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+</div>
+
+@section scripts{
+    <script>
+        $(function() {
+            app.activeMenu('Diagnostic');
+        })
+    </script>
+
+}

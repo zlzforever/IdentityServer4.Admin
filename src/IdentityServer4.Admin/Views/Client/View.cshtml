@@ -1,0 +1,61 @@
+@model Dictionary<string, object>
+@section breadcrumb{
+    <li >
+        <a href="#">Client</a>
+    </li>
+}
+
+@section header{
+    Client<small v-text="moduleDescription"></small>
+}
+<div class="col-xs-12">
+    <div class="box">
+        <!-- /.box-header -->
+        <div class="box-body table-responsive no-padding">
+            <table class="table table-bordered">
+                <tbody>
+                @{
+                    int claimsCount = Model.Count;
+                    int column = 2;
+                    int row = claimsCount / column;
+                    if (row == 0)
+                    {
+                        row = 1;
+                    }
+                    else
+                    {
+                        row = row + (claimsCount % column != 0 ? 1 : 0);
+                    }
+                    for (int i = 0; i < row; i++)
+                    {
+                        <tr>
+                            @for (int j = 0; j < column; ++j)
+                            {
+                                int index = i * column + j;
+                                if (index < claimsCount)
+                                {
+                                    var claim = Model.ElementAt(index);
+                                    <td>
+                                        <strong>@claim.Key</strong>
+                                    </td>
+                                    <td>@claim.Value</td>
+                                    <td></td>
+                                }
+                            }
+                        </tr>
+                    }
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- /.box -->
+</div>
+
+@section scripts{
+    <script>
+        $(function() {
+            app.activeMenu('Client');
+        })
+    </script>
+}

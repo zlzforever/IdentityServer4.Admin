@@ -1,0 +1,11 @@
+<div class="text-success">
+    <ul>
+        @if (ViewData["Info"] != null)
+        {
+            foreach (var info in (string[]) ViewData["Info"])
+            {
+                <li>@info</li>
+            }
+        }
+    </ul>
+</div>

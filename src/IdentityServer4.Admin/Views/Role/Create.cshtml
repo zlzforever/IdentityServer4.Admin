@@ -1,0 +1,54 @@
+﻿@model IdentityServer4.Admin.ViewModels.Role.CreateRoleViewModel
+
+@section breadcrumb{
+    <li >
+        <a href="#">Create role</a>
+    </li>
+}
+
+@section header{
+    Create role<small v-text="moduleDescription"></small>
+}
+
+<div class="col-xs-12">
+    <div class="box">
+        @await Html.PartialAsync("_ValidationSummary")
+        @await Html.PartialAsync("_Information")
+        <form action="/role/create?returnUrl=@ViewData["ReturnUrl"]" method="post">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input asp-for="Name" class="form-control" autocomplete="false" type="text">
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Description</label>
+                            <input asp-for="Description" class="form-control" autocomplete="false" type="text">
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer clearfix">
+                <button type="submit" class="btn btn-default btn-sm  btn-flat">Submit</button>
+            </div>
+        </form>
+    </div>
+    <!-- /.box -->
+</div>
+
+@section scripts
+{
+    <script>
+        $(function() {
+            app.activeMenu('Role');
+        })
+    </script>
+}

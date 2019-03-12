@@ -1,0 +1,54 @@
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>title</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/lib/select2/dist/css/select2.min.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/lib/admin-lte/dist/css/AdminLTE.min.css" asp-append-version="true">
+</head>
+<body>
+<div class="row">
+    <div class="col-md-3">
+        <div class="form-group">
+            <label>密码</label>
+            <input class="form-control" type="password" v-model="password" placeholder="密码">
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <label>电话</label>
+            <input class="form-control" type="text" v-model="phoneNumber" placeholder="电话">
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <label>公司电话</label>
+            <input class="form-control" type="text" v-model="officePhone" placeholder="电话">
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <label>性别</label>
+            <select id="sex" class="form-control select2" style="width: 100%;">
+                <option value="male" selected="selected">男</option>
+                <option value="female">女</option>
+            </select>
+        </div>
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="~/lib/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true"></script>
+<script src="~/lib/select2/dist/js/select2.full.min.js" asp-append-version="true"></script>
+<script>
+    $(function() {
+        $('.select2').select2();
+    })
+</script>
+</body>
+</html>

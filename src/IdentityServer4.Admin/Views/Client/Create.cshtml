@@ -1,0 +1,204 @@
+﻿@model IdentityServer4.Admin.ViewModels.Client.CreateClientViewModel
+
+@section breadcrumb{
+    <li >
+        <a href="#">Create client</a>
+    </li>
+}
+
+@section header{
+    Create client<small v-text="moduleDescription"></small>
+}
+
+<div class="col-xs-12">
+    <div class="box">
+        <form asp-controller="Client" asp-action="CreateAsync" method="post">
+            @await Html.PartialAsync("_ValidationSummary")
+            @await Html.PartialAsync("_Information")
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>ClientId</label>
+                            <input asp-for="ClientId" class="form-control" type="text">
+                            <span asp-validation-for="ClientId" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>ClientName</label>
+                            <input asp-for="ClientName" class="form-control" type="text">
+                            <span asp-validation-for="ClientName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <label>BrowserTokens</label>
+                            <select asp-for="AllowAccessTokensViaBrowser" class="form-control select2">
+                                <option value="True" selected="selected">True</option>
+                                <option value="False">False</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <label>OfflineAccess</label>
+                            <select asp-for="AllowOfflineAccess" class="form-control select2">
+                                <option value="True" selected="selected">True</option>
+                                <option value="False">False</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <label>Consent</label>
+                            <select asp-for="RequireConsent" class="form-control select2">
+                                <option value="True" selected="selected">True</option>
+                                <option value="False">False</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>GrantTypes</label>
+                            <select asp-for="AllowedGrantTypes" class="form-control select2">
+                                <option value="Code">Code</option>
+                                <option value="Hybrid">Hybrid</option>
+                                <option value="Implicit">Implicit</option>
+                                <option value="ClientCredentials">ClientCredentials</option>
+                                <option value="DeviceFlow">DeviceFlow</option>
+                                <option value="ResourceOwnerPassword">ResourceOwnerPassword</option>
+                                <option value="CodeAndClientCredentials">CodeAndClientCredentials</option>
+                                <option value="HybridAndClientCredentials">HybridAndClientCredentials</option>
+                                <option value="ImplicitAndClientCredentials">ImplicitAndClientCredentials</option>
+                                <option value="ResourceOwnerPasswordAndClientCredentials">ResourceOwnerPasswordAndClientCredentials</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>CorsOrigins<small class="text-muted"> split via ;</small></label>
+                            <input asp-for="AllowedCorsOrigins" class="form-control" type="text">
+                            <span asp-validation-for="AllowedCorsOrigins" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>RedirectUris<small class="text-muted"> split via ;</small></label>
+                            <input asp-for="RedirectUris" class="form-control" type="text">
+                            <span asp-validation-for="RedirectUris" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>LogoutRedirectUris<small class="text-muted"> split via ;</small></label>
+                            <input asp-for="PostLogoutRedirectUris" class="form-control" type="text">
+                            <span asp-validation-for="PostLogoutRedirectUris" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Scopes<small class="text-muted"> split via space</small></label>
+                            <input asp-for="AllowedScopes" class="form-control" type="text">
+                            <span asp-validation-for="AllowedScopes" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>ClientUri</label>
+                            <input asp-for="ClientUri" class="form-control" type="text">
+                            <span asp-validation-for="ClientUri" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>LogoUri</label>
+                            <input asp-for="LogoUri" class="form-control" type="text">
+                            <span asp-validation-for="LogoUri" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>IdentityTokenLifetime</label>
+                            <input asp-for="IdentityTokenLifetime" class="form-control" type="number">
+                            <span asp-validation-for="IdentityTokenLifetime" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>AccessTokenLifetime</label>
+                            <input asp-for="AccessTokenLifetime" class="form-control" type="number">
+                            <span asp-validation-for="AccessTokenLifetime" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>AuthorizationCodeLifetime</label>
+                            <input asp-for="AuthorizationCodeLifetime" class="form-control" type="number">
+                            <span asp-validation-for="AuthorizationCodeLifetime" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>AbsoluteRefreshTokenLifetime</label>
+                            <input asp-for="AbsoluteRefreshTokenLifetime" class="form-control" type="number">
+                            <span asp-validation-for="AbsoluteRefreshTokenLifetime" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>ProtocolType</label>
+                            <select asp-for="ProtocolType" class="form-control select2" style="width: 100%;">
+                                <option value="oidc" selected="selected">OpenIdConnect</option>
+                                <option value="wsfed">WsFederation</option>
+                                <option value="saml2p">Saml2p</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>UserSsoLifetime</label>
+                            <input asp-for="UserSsoLifetime" class="form-control" type="number">
+                            <span asp-validation-for="UserSsoLifetime" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Description</label>
+                            <input asp-for="Description" class="form-control" type="text">
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer clearfix">
+                <button type="submit" class="btn btn-default btn-sm  btn-flat">Submit</button>
+            </div>
+        </form>
+    </div>
+    <!-- /.box -->
+</div>
+@section scripts{
+    <script>
+        $(function() {
+            app.activeMenu('Client');
+        })
+    </script>
+}

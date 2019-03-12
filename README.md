@@ -8,62 +8,52 @@
 
 ### How to use
 
+#### Install Docker-CE
+
+1. Instann docker-ce follow offical document
+
+        https://docs.docker.com/install/
+
+2. *Change docker repositry to Ali docker repositry* because i only push to Ali repositry
+
+#### Prepare SqlServer
+
++ Right now only support SqlServer
+
 #### Prepare configuration
 
-        $ mkdir /ids4admin2
-        $ 
+        $ sudo mkdir /ids4admin2
+        $ sudo cd /ids4admin2
+        $ sudo curl https://raw.githubusercontent.com/zlzforever/IdentityServer4.Admin/master/src/IdentityServer4.Admin/appsettings.json -O
 
-#### run a test instance
+Then change `ConnectionString` to your database connection string in the appsettings.json
 
-        $ docker run -d --name ids4admin --restart always  -e ADMIN_PASSWORD=1qazZAQ! -p 6566:6566 -p 6201:6201 zlzforever/ids4admin:latest /dev
+#### Pull & start docker images
 
-+ try open http://localhost:6566 and login by user: admin, password: 1qazZAQ!
-+ ids4admin runs in a memory storage with dev mode
+        $ sudo docker pull registry.cn-shanghai.aliyuncs.com/zlzforever/ids4admin:latest
+        $ sudo docker run -d --name ids4admin2 --restart always  -e ADMIN_PASSWORD=1qazZAQ! -p 5566:5566 registry.cn-shanghai.aliyuncs.com/zlzforever/ids4admin:latest
         
-#### run a production instance
+#### Start from brower
 
-        $ sudo mkdir /ids4admin
-        $ sudo curl -o /ids4admin/appsettings.json https://raw.githubusercontent.com/zlzforever/IdentityServer4.Admin/master/src/IdentityServer4.Admin/appsettings.json
-        
-change the configuration as you wish, for example database settings, support SqlServer and MySql right now:
-        
-        "DatabaseProvider": "MySql",
-        "ConnectionString": "Database='ids4';Data Source=192.168.90.109;User ID=root;Password=xxxx;Port=60007;SslMode=None;",
+        http://localhost:5566
 
-then start a new instance          
-                 
-        $ docker run -d --name ids4admin --restart always -v /ids4admin:/ids4admin -p 6566:6566 -p 6201:6201 zlzforever/ids4admin:latest /ids4admin/appsettings.json
+ Default administrator account: admin  1qazZAQ!
 
 ### How to build the latest docker image
 
+Go to the source code folder(src/IdentityServer4.Admin) and run build.sh
+
         $ sh build.sh                     
 
-### 功能说明
+### Images
 
-角色 
+![1](https://github.com/zlzforever/IdentityServer4.Admin/raw/master/images/1.png)
+![2](https://github.com/zlzforever/IdentityServer4.Admin/raw/master/images/2.png)
+![3](https://github.com/zlzforever/IdentityServer4.Admin/raw/master/images/3.png)
+![4](https://github.com/zlzforever/IdentityServer4.Admin/raw/master/images/4.png)
+![5](https://github.com/zlzforever/IdentityServer4.Admin/raw/master/images/5.png)
 
-| feature | detail  | permission |   state |
-|----|----|----|----|
-| 添加角色    |  角色名不能重复, 不能添加名为 admin 的角色  | admin |   ☑    |
-| 修改角色 |   不能修改 admin 角色       | admin |   ☑    |
-| 删除角色 |  删除角色对象，删除用户角色记录，admin 角色不能删除          | admin |   ☑   |
-| 查询角色    |           |   admin  |  ☑   |
 
-用户 
-
-| feature | detail  | permission |   state |
-|----|----|----|----|
-| 添加用户        |  | admin |   ☑    |
-| 修改用户 |           | admin |   ☑    |
-| 删除用户 |          | admin |   ☑   |
-| 锁定用户 |  被锁定的用户无法登录         | admin |   ☑   |
-| 解锁用户 |           | admin |   ☑   |
-| 查询用户    |           |   admin  |  ☑   |
-| 设置密码    |  不需要原始密码         |   admin  |  ☑   |
-| 添加用户角色    |   admin 用户不能添加角色        |   admin  |  ☑   |
-| 删除用户角色    |   admin 用户不能删除角色        |   admin  |  ☑   |   
-| 用户 Profile    |           |   login  |  ☑    |  
-| 修改密码    |   需要原始密码        |   login  |  ☑  |
 
 
 

@@ -47,11 +47,12 @@ Go to the source code folder(src/IdentityServer4.Admin) and run build.sh
 
 ### Images
 
-![1](https://github.com/zlzforever/IdentityServer4.Admin/raw/master/images/1.png)
-![2](https://github.com/zlzforever/IdentityServer4.Admin/raw/master/images/2.png)
-![3](https://github.com/zlzforever/IdentityServer4.Admin/raw/master/images/3.png)
-![4](https://github.com/zlzforever/IdentityServer4.Admin/raw/master/images/4.png)
-![5](https://github.com/zlzforever/IdentityServer4.Admin/raw/master/images/5.png)
+![1](https://raw.githubusercontent.com/zlzforever/IdentityServer4.Admin/master/images/001.png)
+![2](https://raw.githubusercontent.com/zlzforever/IdentityServer4.Admin/master/images/002.png)
+![3](https://raw.githubusercontent.com/zlzforever/IdentityServer4.Admin/master/images/003.png)
+![4](https://raw.githubusercontent.com/zlzforever/IdentityServer4.Admin/master/images/004.png)
+![5](https://raw.githubusercontent.com/zlzforever/IdentityServer4.Admin/master/images/005.png)
+![6](https://raw.githubusercontent.com/zlzforever/IdentityServer4.Admin/master/images/006.png)
 
 
 

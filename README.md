@@ -22,8 +22,8 @@
 
 #### Prepare configuration
 
-        $ sudo mkdir /ids4admin2
-        $ sudo cd /ids4admin2
+        $ sudo mkdir ~/ids4admin2
+        $ sudo cd ~/ids4admin2
         $ sudo curl https://raw.githubusercontent.com/zlzforever/IdentityServer4.Admin/master/src/IdentityServer4.Admin/appsettings.json -O
 
 Then change `ConnectionString` to your database connection string in the appsettings.json
@@ -31,11 +31,11 @@ Then change `ConnectionString` to your database connection string in the appsett
 #### Pull & start docker images
 
         $ sudo docker pull registry.cn-shanghai.aliyuncs.com/zlzforever/ids4admin:latest
-        $ sudo docker run -d --name ids4admin2 --restart always  -e ADMIN_PASSWORD=1qazZAQ! -p 5566:5566 registry.cn-shanghai.aliyuncs.com/zlzforever/ids4admin:latest
+        $ sudo docker run -d --name ids4admin2 --restart always -e ADMIN_PASSWORD=1qazZAQ! -v ~/ids4admin2:/ids4admin2 -p 5566:7896 registry.cn-shanghai.aliyuncs.com/zlzforever/ids4admin /ids4admin2/appsettings.json
         
 #### Start from brower
 
-        http://localhost:5566
+        http://localhost:7896
 
  Default administrator account: admin  1qazZAQ!
 

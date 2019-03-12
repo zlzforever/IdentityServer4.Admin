@@ -19,12 +19,16 @@
         <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="2.7.0" />
         <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.2.0" />
         <PackageReference Include="SkiaSharp" Version="1.68.0" />
+        <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="1.68.0" />
         <PackageReference Include="System.Drawing.Common" Version="4.5.1" />
         <PackageReference Include="X.PagedList.Mvc.Core" Version="7.6.0" />
     </ItemGroup>
     <ItemGroup>
         <Folder Include="wwwroot\head-icon" />
         <Folder Include="wwwroot\lib" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="libSkiaSharp.so" CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
     <ItemGroup>
         <None Update="Dockerfile">
@@ -88,6 +92,9 @@
         </Compile>
         <Compile Update="Controllers\Client.Create.Controller.cs">
           <DependentUpon>ClientController.cs</DependentUpon>
+        </Compile>
+        <Compile Update="Controllers\Account.Logout.Controller.cs">
+          <DependentUpon>AccountController.cs</DependentUpon>
         </Compile>
     </ItemGroup>
 </Project>

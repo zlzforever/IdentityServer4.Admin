@@ -155,7 +155,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
@@ -174,9 +173,25 @@
                             <span asp-validation-for="UserSsoLifetime" class="text-danger"></span>
                         </div>
                     </div>
-
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>RequirePkce</label>
+                            <select asp-for="RequirePkce" class="form-control select2">
+                                <option value="True" selected="selected">True</option>
+                                <option value="False">False</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>RequireClientSecret</label>
+                            <select asp-for="RequireClientSecret" class="form-control select2">
+                                <option value="True" selected="selected">True</option>
+                                <option value="False">False</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
-
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
@@ -195,6 +210,7 @@
     </div>
     <!-- /.box -->
 </div>
+
 @section scripts{
     <script>
         $(function() {

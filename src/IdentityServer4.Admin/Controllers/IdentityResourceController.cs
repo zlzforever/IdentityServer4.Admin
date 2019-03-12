@@ -44,7 +44,7 @@ namespace IdentityServer4.Admin.Controllers
                         ShowInDiscoveryDocument = x.ShowInDiscoveryDocument,
                         UserClaims = !claims.ContainsKey(x.Id)
                             ? ""
-                            : string.Join(" ", claims[x.Id].Select(ic => ic.Type)),
+                            : string.Join(" ", claims[x.Id].Select(ic => ic.Type))
                     }), queryResult.PageNumber,
                 queryResult.PageSize, queryResult.TotalItemCount);
             return View(viewModel);

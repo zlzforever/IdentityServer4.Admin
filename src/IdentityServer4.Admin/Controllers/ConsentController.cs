@@ -159,11 +159,9 @@ namespace IdentityServer4.Admin.Controllers
                     {
                         return CreateConsentViewModel(model, returnUrl, client, resources);
                     }
-                    else
-                    {
-                        Logger.LogError("No scopes matching: {0}",
-                            request.ScopesRequested.Aggregate((x, y) => x + ", " + y));
-                    }
+
+                    Logger.LogError("No scopes matching: {0}",
+                        request.ScopesRequested.Aggregate((x, y) => x + ", " + y));
                 }
                 else
                 {
@@ -180,7 +178,7 @@ namespace IdentityServer4.Admin.Controllers
 
         private ConsentViewModel CreateConsentViewModel(
             ConsentInputModel model, string returnUrl,
-            Client client, IdentityServer4.Models.Resources resources)
+            Client client, Models.Resources resources)
         {
             var vm = new ConsentViewModel();
             vm.RememberConsent = model?.RememberConsent ?? true;

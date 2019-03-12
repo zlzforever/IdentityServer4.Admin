@@ -6,6 +6,7 @@ using IdentityServer4.Admin.Entities;
 using IdentityServer4.Admin.ViewModels.Account;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace IdentityServer4.Admin.Controllers
 {
@@ -59,6 +60,24 @@ namespace IdentityServer4.Admin.Controllers
 
         private async Task<ProfileViewModel> BuildProfileViewModelAsync(User user)
         {
+            string icon = Path.Combine("head-icon", "default.png");
+
+            if (!string.IsNullOrWhiteSpace(user.Icon))
+            {
+                try
+                {
+                    var realPath = Path.Combine(_options.StorageRoot, user.Icon);
+                    if (System.IO.File.Exists(realPath))
+                    {
+                        icon = user.Icon;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Logger.LogError($"Calculate head icon path failed: {e}");
+                }
+            }
+
             var viewModel = new ProfileViewModel
             {
                 PhoneNumber = user.PhoneNumber,
@@ -69,7 +88,7 @@ namespace IdentityServer4.Admin.Controllers
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 OfficePhone = user.OfficePhone,
-                Icon = System.IO.File.Exists($"{_options.StorageRoot}/{user.Icon}") ? user.Icon : null,
+                Icon = icon,
                 NickName = user.NickName,
                 WebSite = user.WebSite,
                 Slogan = user.Slogan,

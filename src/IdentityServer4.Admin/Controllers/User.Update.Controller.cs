@@ -43,22 +43,16 @@ namespace IdentityServer4.Admin.Controllers
                     AddErrors(result);
                     return View("View", dto);
                 }
-                else
+
+                if (string.IsNullOrEmpty(returnUrl))
                 {
-                    if (string.IsNullOrEmpty(returnUrl))
-                    {
-                        return RedirectToAction("Index");
-                    }
-                    else
-                    {
-                        return Redirect(returnUrl);
-                    }
+                    return RedirectToAction("Index");
                 }
+
+                return Redirect(returnUrl);
             }
-            else
-            {
-                return View("View", dto);
-            }
+
+            return View("View", dto);
         }
     }
 }

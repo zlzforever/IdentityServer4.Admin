@@ -9,11 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using ApiResource = IdentityServer4.Models.ApiResource;
-using Client = IdentityServer4.Models.Client;
 using GrantTypes = IdentityServer4.Models.GrantTypes;
-using IdentityResource = IdentityServer4.Models.IdentityResource;
-
 
 namespace IdentityServer4.Admin
 {
@@ -119,6 +115,7 @@ namespace IdentityServer4.Admin
             AddIdentityResources();
             AddApiResources();
             AddClients();
+            Commit();
         }
 
         private void Commit()
@@ -180,7 +177,10 @@ namespace IdentityServer4.Admin
 
         private IEnumerable<ApiResource> GetApiResources()
         {
-            return new List<ApiResource>();
+            return new List<ApiResource>
+            {
+                new ApiResource("api1", "My API")
+            };
         }
 
         // scopes define the resources in your system
@@ -189,7 +189,7 @@ namespace IdentityServer4.Admin
             return new List<IdentityResource>
             {
                 new IdentityResources.OpenId(),
-                new IdentityResources.Profile(),
+                new IdentityResources.Profile()
             };
         }
 
@@ -201,20 +201,74 @@ namespace IdentityServer4.Admin
             {
                 new Client
                 {
-                    ClientId = "dotnetclub",
-                    ClientName = "dotnetclub",
-                    AllowedGrantTypes = GrantTypes.Implicit,
-                    AllowAccessTokensViaBrowser = true,
-                    AllowedCorsOrigins = {"http://localhost:7896"},
-                    RedirectUris = {"http://localhost:7896/signin-oidc"},
-                    PostLogoutRedirectUris = {"http://localhost:7896/signout-callback-oidc"},
-                    RequireConsent = true,
-                    AllowOfflineAccess = false,
-                    AccessTokenLifetime = 3600 * 24 * 7,
+                    ClientId = "client",
+
+                    // no interactive user, use the clientid/secret for authentication
+                    AllowedGrantTypes = GrantTypes.ClientCredentials,
+
+                    // secret for authentication
+                    ClientSecrets =
+                    {
+                        new Secret("secret".Sha256())
+                    },
+
+                    // scopes that client has access to
+                    AllowedScopes = { "api1" }
+                },
+                // resource owner password grant client
+                new Client
+                {
+                    ClientId = "ro.client",
+                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+
+                    ClientSecrets =
+                    {
+                        new Secret("secret".Sha256())
+                    },
+                    AllowedScopes = { "api1" }
+                },
+                // OpenID Connect hybrid flow client (MVC)
+                new Client
+                {
+                    ClientId = "mvc",
+                    ClientName = "MVC Client",
+                    AllowedGrantTypes = GrantTypes.Hybrid,
+
+                    ClientSecrets =
+                    {
+                        new Secret("secret".Sha256())
+                    },
+
+                    RedirectUris           = { "http://localhost:5002/signin-oidc" },
+                    PostLogoutRedirectUris = { "http://localhost:5002/signout-callback-oidc" },
+
                     AllowedScopes =
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "api1"
+                    },
+
+                    AllowOfflineAccess = true
+                },
+                // JavaScript Client
+                new Client
+                {
+                    ClientId = "js",
+                    ClientName = "JavaScript Client",
+                    AllowedGrantTypes = GrantTypes.Code,
+                    RequirePkce = true,
+                    RequireClientSecret = false,
+
+                    RedirectUris =           { "http://localhost:5003/callback.html" },
+                    PostLogoutRedirectUris = { "http://localhost:5003/index.html" },
+                    AllowedCorsOrigins =     { "http://localhost:5003" },
+
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "api1"
                     }
                 }
             };

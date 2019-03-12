@@ -1,24 +1,13 @@
-@using IdentityServer4.Admin.Infrastructure
 @{
     Layout = "_FrameworkLayout";
 }
 
 @inject AdminOptions Options;
+@using IdentityServer4.Admin.Infrastructure
 @model IdentityServer4.Admin.ViewModels.Account.RegisterViewModel
 
 @section title{
     <title>@Options.SiteName | 注册</title>
-}
-
-@section css{
-    <style>
-        body {
-            font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            font-weight: 400;
-            font-size: 12px;
-            background: #d2d6de
-        }
-    </style>
 }
 
 <div class="register-box">
@@ -29,14 +18,17 @@
         @await Html.PartialAsync("_ValidationSummary")
         <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
             <div class="form-group has-feedback">
+                <label>用户名</label>
                 <input asp-for="UserName" type="text" class="form-control">
                 <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
             <div class="form-group has-feedback">
+                <label>密码</label>
                 <input asp-for="Password" class="form-control">
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group has-feedback">
+                <label>重复密码</label>
                 <input asp-for="ConfirmPassword" type="password" class="form-control">
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>

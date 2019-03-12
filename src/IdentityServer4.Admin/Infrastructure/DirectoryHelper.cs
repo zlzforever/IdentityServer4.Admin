@@ -14,21 +14,21 @@ namespace IdentityServer4.Admin.Infrastructure
                 throw new IdentityServer4AdminException("文件路径不合法");
             }
 
-            if (!System.IO.Directory.Exists(folder))
+            if (!Directory.Exists(folder))
             {
-                System.IO.Directory.CreateDirectory(folder);
+                Directory.CreateDirectory(folder);
             }
         }
         public static void Move(string sourcePath, string destPath)
         {
-            if (System.IO.Directory.Exists(sourcePath))
+            if (Directory.Exists(sourcePath))
             {
-                if (!System.IO.Directory.Exists(destPath))
+                if (!Directory.Exists(destPath))
                 {
                     //目标目录不存在则创建
                     try
                     {
-                        System.IO.Directory.CreateDirectory(destPath);
+                        Directory.CreateDirectory(destPath);
                     }
                     catch (Exception ex)
                     {
@@ -37,10 +37,10 @@ namespace IdentityServer4.Admin.Infrastructure
                 }
 
                 //获得源文件下所有文件
-                List<string> files = new List<string>(System.IO.Directory.GetFiles(sourcePath));
+                List<string> files = new List<string>(Directory.GetFiles(sourcePath));
                 files.ForEach(c =>
                 {
-                    string destFile = Path.Combine(new string[] {destPath, Path.GetFileName(c)});
+                    string destFile = Path.Combine(new[] {destPath, Path.GetFileName(c)});
                     //覆盖模式
                     if (File.Exists(destFile))
                     {
@@ -50,11 +50,11 @@ namespace IdentityServer4.Admin.Infrastructure
                     File.Move(c, destFile);
                 });
                 //获得源文件下所有目录文件
-                List<string> folders = new List<string>(System.IO.Directory.GetDirectories(sourcePath));
+                List<string> folders = new List<string>(Directory.GetDirectories(sourcePath));
 
                 folders.ForEach(c =>
                 {
-                    string destDir = Path.Combine(new string[] {destPath, Path.GetFileName(c)});
+                    string destDir = Path.Combine(new[] {destPath, Path.GetFileName(c)});
                     //采用递归的方法实现
                     Move(c, destDir);
                 });

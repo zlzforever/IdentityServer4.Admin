@@ -41,15 +41,11 @@ namespace IdentityServer4.Admin.Controllers
                 {
                     return RedirectToAction("Index");
                 }
-                else
-                {
-                    return Redirect(returnUrl);
-                }
+
+                return Redirect(returnUrl);
             }
-            else
-            {
-                AddErrors(result);
-            }
+
+            AddErrors(result);
 
             return View("Create", dto);
         }

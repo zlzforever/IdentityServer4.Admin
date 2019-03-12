@@ -1,4 +1,5 @@
 @model Dictionary<string, object>
+
 @section breadcrumb{
     <li >
         <a href="#">Client</a>
@@ -8,6 +9,7 @@
 @section header{
     Client<small v-text="moduleDescription"></small>
 }
+
 <div class="col-xs-12">
     <div class="box">
         <!-- /.box-header -->
@@ -15,6 +17,8 @@
             <table class="table table-bordered">
                 <tbody>
                 @{
+                    var keys = Model.Keys.ToList();
+                    keys.Sort();
                     int claimsCount = Model.Count;
                     int column = 2;
                     int row = claimsCount / column;
@@ -34,12 +38,12 @@
                                 int index = i * column + j;
                                 if (index < claimsCount)
                                 {
-                                    var claim = Model.ElementAt(index);
                                     <td>
-                                        <strong>@claim.Key</strong>
+                                        <strong>@keys[index]</strong>
                                     </td>
-                                    <td>@claim.Value</td>
-                                    <td></td>
+                                    <td> @Model[keys[index]]</td>
+                                    <td>
+                                    </td>
                                 }
                             }
                         </tr>

@@ -1,8 +1,7 @@
-@model IPagedList<IdentityServer4.Admin.ViewModels.IdentityResource.ListIdentityResourceItemViewModel>
 @using IdentityServer4
-@using X.PagedList
 @using X.PagedList.Mvc.Common
 @using X.PagedList.Mvc.Core
+@model X.PagedList.IPagedList<IdentityServer4.Admin.ViewModels.IdentityResource.ListIdentityResourceItemViewModel>
 @{
     var returnUrl = string.Concat("/identity-resource", Context.Request.QueryString);
 }

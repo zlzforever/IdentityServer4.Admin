@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Serilog;
 using Serilog.Events;
-using EnvironmentName = Microsoft.AspNetCore.Hosting.EnvironmentName;
 
 namespace IdentityServer4.Admin
 {
@@ -13,17 +12,18 @@ namespace IdentityServer4.Admin
     {
         public static void Main(string[] args)
         {
-            string logFile = "ids4.log";
-            if (Directory.Exists("/ids4admin"))
-            {
-                var logDirectory = new DirectoryInfo("/ids4admin/log");
-                if (!logDirectory.Exists)
-                {
-                    logDirectory.Create();
-                }
+            var configFile = args.FirstOrDefault(a => a.Contains("appsettings.json"));
+            var mountFolder = configFile != null && File.Exists(configFile)
+                ? Path.GetDirectoryName(configFile)
+                : "";
 
-                logFile = "/ids4admin/log/ids4.log";
+            var logDirectory = new DirectoryInfo(Path.Combine(mountFolder, "log"));
+            if (!logDirectory.Exists)
+            {
+                logDirectory.Create();
             }
+
+            var logFile = Path.Combine(mountFolder, "log", "ids4-admin.log");
 
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Information()
@@ -38,14 +38,11 @@ namespace IdentityServer4.Admin
             Log.Logger.Information($"Log to: {logFile}");
             var builder = WebHost.CreateDefaultBuilder(args).ConfigureAppConfiguration(config =>
                 {
-                    var configFile = args.FirstOrDefault(a => a.Contains("appsettings.json"));
-                    if (configFile != null && File.Exists(configFile))
-                    {
-                        config.AddJsonFile(configFile);
-                        Log.Logger.Information($"Use external config: {configFile}");
-                    }
+                    var configPath = Path.Combine(mountFolder, "appsettings.json");
+                    config.AddJsonFile(configPath);
+                    Log.Logger.Information($"Use config: {configPath}");
                 })
-                .UseStartup<Startup>().UseSerilog().UseUrls("http://0.0.0.0:5566");
+                .UseStartup<Startup>().UseSerilog().UseUrls("http://0.0.0.0:7896");
 
             var seed = args.Contains("/seed");
             if (seed)
@@ -62,6 +59,8 @@ namespace IdentityServer4.Admin
             {
                 builder.UseEnvironment(EnvironmentName.Production);
             }
+
+            builder.UseSetting("MountFolder", mountFolder);
 
             var host = builder.Build();
             host.Run();

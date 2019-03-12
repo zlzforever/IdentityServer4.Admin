@@ -1,6 +1,6 @@
-﻿@model IdentityServer4.Admin.ViewModels.User.ListUserViewModel
-@using X.PagedList.Mvc.Common
+﻿@using X.PagedList.Mvc.Common
 @using X.PagedList.Mvc.Core
+@model IdentityServer4.Admin.ViewModels.User.ListUserViewModel
 @{
     var returnUrl = string.Concat("/user", Context.Request.QueryString);
 }
@@ -65,7 +65,7 @@
                                 <span >@user.Email</span>
                             </td>
                             <td>
-                                <span >@string.Concat(@user.LastName, user.FirstName)</span>
+                                <span >@string.Concat(user.LastName, user.FirstName)</span>
                             </td>
                             <td>
                                 <span>@user.Roles</span>

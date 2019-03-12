@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
 using IdentityServer4.Admin.Infrastructure;
+using IdentityServer4.Admin.ViewModels;
 using IdentityServer4.Admin.ViewModels.Home;
+using IdentityServer4.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -11,11 +14,16 @@ namespace IdentityServer4.Admin.Controllers
 {
     public class HomeController : ControllerBase
     {
-        private IDbContext _dbContext;
+        private readonly IDbContext _dbContext;
+        private readonly IIdentityServerInteractionService _interaction;
+        private readonly IHostingEnvironment _environment;
 
-        public HomeController(IDbContext dbContext, ILoggerFactory loggerFactory) : base(loggerFactory)
+        public HomeController(IIdentityServerInteractionService interaction, IDbContext dbContext,
+            IHostingEnvironment environment, ILoggerFactory loggerFactory) : base(loggerFactory)
         {
             _dbContext = dbContext;
+            _interaction = interaction;
+            _environment = environment;
         }
 
         [HttpGet("test")]
@@ -41,7 +49,30 @@ namespace IdentityServer4.Admin.Controllers
                 return View(viewModel);
             }
 
-            return Redirect($"user/{userId}/profile");
+            return Redirect("account/profile");
+        }
+
+        /// <summary>
+        /// Shows the error page
+        /// </summary>
+        public async Task<IActionResult> Error(string errorId)
+        {
+            var vm = new ErrorViewModel();
+
+            // retrieve error details from identityserver
+            var message = await _interaction.GetErrorContextAsync(errorId);
+            if (message != null)
+            {
+                vm.Error = message;
+
+                if (!_environment.IsDevelopment())
+                {
+                    // only show in development
+                    message.ErrorDescription = null;
+                }
+            }
+
+            return View("Error", vm);
         }
     }
 }

@@ -90,7 +90,7 @@ namespace IdentityServer4.Admin.Infrastructure
         private static SKPaint CreatePaint(SKColor color, string fontName, SKFontStyleWeight weight,
             SKFontStyleWidth width, SKFontStyleSlant slant)
         {
-            SkiaSharp.SKTypeface font = SkiaSharp.SKTypeface.FromFamilyName(fontName, weight, width, slant);
+            SKTypeface font = SKTypeface.FromFamilyName(fontName, weight, width, slant);
 
             SKPaint paint = new SKPaint
             {

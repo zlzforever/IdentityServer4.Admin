@@ -47,16 +47,12 @@ namespace IdentityServer4.Admin.Controllers
                 {
                     return RedirectToAction("Index");
                 }
-                else
-                {
-                    return Redirect(returnUrl);
-                }
+
+                return Redirect(returnUrl);
             }
-            else
-            {
-                AddErrors(result);
-                return View("View", dto);
-            }
+
+            AddErrors(result);
+            return View("View", dto);
         }
     }
 }

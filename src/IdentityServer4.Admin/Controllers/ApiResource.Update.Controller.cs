@@ -79,10 +79,8 @@ namespace IdentityServer4.Admin.Controllers
                 {
                     return RedirectToAction("Index");
                 }
-                else
-                {
-                    return Redirect(returnUrl);
-                }
+
+                return Redirect(returnUrl);
             }
             catch (Exception e)
             {

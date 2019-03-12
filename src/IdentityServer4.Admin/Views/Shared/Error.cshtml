@@ -1,78 +1,40 @@
+@using IdentityServer4.Admin.Infrastructure
 @using Microsoft.AspNetCore.Hosting
 @model IdentityServer4.Admin.ViewModels.ErrorViewModel
 @inject IHostingEnvironment Host
+@inject AdminOptions Options;
 @{
-    Layout = null;
+    Layout = "_FrameworkLayout";
     var error = Model?.Error?.Error;
     var errorDescription = Host.IsDevelopment() ? Model?.Error?.ErrorDescription : null;
     var requestId = Model?.Error?.RequestId;
 }
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>IdentityServer4 Admin | Log in</title>
-    <!-- Tell the browser to be responsive to screen width -->
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" asp-append-version="true">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="~/lib/Ionicons/css/ionicons.min.css" asp-append-version="true">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="~/lib/admin-lte/dist/css/AdminLTE.min.css" asp-append-version="true">
-    <!-- iCheck -->
-    <link rel="stylesheet" href="~/lib/admin-lte/plugins/iCheck/square/blue.css" asp-append-version="true">
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-</head>
-<body class="hold-transition login-page">
-<div class="login-box">
+@section title{
+    <title>@Options.SiteName | 错误</title>
+}
+
+<section class="content">
+
     <div class="error-page">
-        <div class="page-header">
-            <h1>Error</h1>
-        </div>
+        <h2 class="headline text-red">
+            <i class="fa fa-warning text-red"></i>
+        </h2>
 
-        <div class="row">
-            <div class="col-sm-6">
-                <div class="alert alert-danger">
-                    Sorry, there was an error
+        <div class="error-content" style="padding-top: 10px;">
+            <h4>
+                <label>Description</label>
+                <input value="@errorDescription" class="form-control" style="color:red"/>
+            </h4>
+            <h4>
+                <label>RequestId</label>
+                <input value="@requestId" class="form-control" style="color:red"/>
+            </h4>
+            <p>
 
-                    @if (error != null)
-                    {
-                        <strong>
-                            <em>
-                                : @error
-                            </em>
-                        </strong>
-
-                        if (errorDescription != null)
-                        {
-                            <div>@errorDescription</div>
-                        }
-                    }
-                </div>
-
-                @if (requestId != null)
-                {
-                    <div class="request-id">Request Id: @requestId</div>
-                }
-            </div>
+            </p>
         </div>
     </div>
-</div>
-<!-- /.login-box -->
+    <!-- /.error-page -->
 
-<!-- jQuery 3 -->
-<script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
-<!-- Bootstrap -->
-<script src="~/lib/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true"></script>
-</body>
-</html>
+</section>

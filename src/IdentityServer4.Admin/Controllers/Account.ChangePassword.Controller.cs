@@ -36,10 +36,8 @@ namespace IdentityServer4.Admin.Controllers
                 AddErrors(result);
                 return View("changepassword", dto);
             }
-            else
-            {
-                return View("changepassword", new ChangePasswordViewModel());
-            }
+
+            return View("changepassword", new ChangePasswordViewModel());
         }
     }
 }

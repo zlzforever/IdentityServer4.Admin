@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using IdentityServer4.Admin.Infrastructure;
 using IdentityServer4.Admin.ViewModels.Client;
 using IdentityServer4.EntityFramework.Mappers;
+using IdentityServer4.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -49,7 +50,7 @@ namespace IdentityServer4.Admin.Controllers
             }
 
 
-            var client = new Models.Client
+            var client = new Client
             {
                 AllowedGrantTypes = dto.GetAllowedGrantTypes(),
                 Description = dto.Description,
@@ -105,10 +106,8 @@ namespace IdentityServer4.Admin.Controllers
             {
                 return RedirectToAction("Index");
             }
-            else
-            {
-                return Redirect(returnUrl);
-            }
+
+            return Redirect(returnUrl);
         }
     }
 }

@@ -16,7 +16,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
-using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace IdentityServer4.Admin
 {
@@ -92,7 +91,10 @@ namespace IdentityServer4.Admin
             var builder = services.AddIdentityServer()
                 .AddAspNetIdentity<User>();
 
-            var key = Directory.Exists("/ids4admin") ? "/ids4admin/signing_key.rsa" : "signing_key.rsa";
+            var key = string.IsNullOrWhiteSpace(_configuration["MountFolder"])
+                ? "signing_key.rsa"
+                : Path.Combine(_configuration["MountFolder"], "signing_key.rsa");
+
             builder.AddDeveloperSigningCredential(true, key);
 
             builder.AddConfigurationStore<AdminDbContext>(options =>
@@ -122,7 +124,7 @@ namespace IdentityServer4.Admin
             }
             else
             {
-                app.UseExceptionHandler("/error");
+                app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
 
@@ -136,7 +138,7 @@ namespace IdentityServer4.Admin
             {
                 app.UseFileServer(new FileServerOptions
                 {
-                    FileProvider = new PhysicalFileProvider(_options.StorageRoot),
+                    FileProvider = new PhysicalFileProvider(_options.StorageRoot)
                 });
                 DirectoryHelper.Move("wwwroot", _options.StorageRoot);
             }
@@ -176,7 +178,7 @@ namespace IdentityServer4.Admin
                 cfg.CreateMap<CreateUserViewModel, User>();
                 cfg.CreateMap<Role, ViewRoleViewModel>();
                 cfg.CreateMap<Role, ViewUserRoleViewModel>();
-                cfg.CreateMap<CreateRoleViewModel, Role>();     
+                cfg.CreateMap<CreateRoleViewModel, Role>();
                 cfg.CreateMap<UpdateProfileViewModel, User>();
                 cfg.CreateMap<UpdateProfileViewModel, ProfileViewModel>();
                 cfg.CreateMap<User, ListUserItemViewModel>();

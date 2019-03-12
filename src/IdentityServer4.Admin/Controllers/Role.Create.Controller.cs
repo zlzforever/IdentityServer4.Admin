@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using IdentityServer4.Admin.Entities;
@@ -35,7 +34,7 @@ namespace IdentityServer4.Admin.Controllers
             string normalizedName = _roleManager.NormalizeKey(role.Name);
             if (await _roleManager.Roles.AnyAsync(u => u.NormalizedName == normalizedName))
             {
-                ModelState.AddModelError("Name", $"Name already exits");
+                ModelState.AddModelError("Name", "Name already exits");
                 return View("Create", dto);
             }
 
@@ -46,16 +45,12 @@ namespace IdentityServer4.Admin.Controllers
                 {
                     return RedirectToAction("Index");
                 }
-                else
-                {
-                    return Redirect(returnUrl);
-                }
+
+                return Redirect(returnUrl);
             }
-            else
-            {
-                AddErrors(result);
-                return View("Create", dto);
-            }
+
+            AddErrors(result);
+            return View("Create", dto);
         }
     }
 }

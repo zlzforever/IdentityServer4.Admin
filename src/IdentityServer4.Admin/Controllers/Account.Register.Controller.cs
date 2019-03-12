@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using IdentityServer4.Admin.Entities;
 using IdentityServer4.Admin.Infrastructure;
@@ -32,9 +31,9 @@ namespace IdentityServer4.Admin.Controllers
                 {
                     ModelState.AddModelError(AdminConsts.VerificationCode, "验证码不正确");
                 }
-                else if (model.AgreeTerms != "on")
+                else if (model.AgreeTerms != "true")
                 {
-                    ModelState.AddModelError(String.Empty, "请接受网站条款");
+                    ModelState.AddModelError("AgreeTerms", "请接受网站条款");
                 }
                 else
                 {

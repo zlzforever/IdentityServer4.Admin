@@ -46,26 +46,20 @@ namespace IdentityServer4.Admin.Controllers
                 AddErrors(identityResult);
                 return View("SetPassword", dto);
             }
-            else
+
+            identityResult = await _userManager.AddPasswordAsync(user, dto.NewPassword.Trim());
+            if (!identityResult.Succeeded)
             {
-                identityResult = await _userManager.AddPasswordAsync(user, dto.NewPassword.Trim());
-                if (!identityResult.Succeeded)
-                {
-                    AddErrors(identityResult);
-                    return View("SetPassword", dto);
-                }
-                else
-                {
-                    if (string.IsNullOrEmpty(returnUrl))
-                    {
-                        return View(new SetPasswordViewModel());
-                    }
-                    else
-                    {
-                        return Redirect(returnUrl);
-                    }
-                }
+                AddErrors(identityResult);
+                return View("SetPassword", dto);
             }
+
+            if (string.IsNullOrEmpty(returnUrl))
+            {
+                return View(new SetPasswordViewModel());
+            }
+
+            return Redirect(returnUrl);
         }
     }
 }

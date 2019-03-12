@@ -2,11 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using IdentityServer4.Models;
+using GrantTypes = IdentityServer4.Admin.Infrastructure.GrantTypes;
 
 namespace IdentityServer4.Admin.ViewModels.Client
 {
     public class CreateClientViewModel
     {
+        /// <summary>
+        /// Specifies if client is enabled (defaults to <c>true</c>)
+        /// </summary>
+        public bool Enabled { get; set; } = true;
+        
         /// <summary>
         /// Unique ID of the client
         /// </summary>
@@ -25,7 +31,7 @@ namespace IdentityServer4.Admin.ViewModels.Client
         /// Specifies the allowed grant types (legal combinations of AuthorizationCode, Implicit, Hybrid, ResourceOwner, ClientCredentials).
         /// </summary>
         [Required]
-        public IdentityServer4.Admin.Infrastructure.GrantTypes AllowedGrantTypes { get; set; }
+        public GrantTypes AllowedGrantTypes { get; set; }
 
         /// <summary>
         /// Controls whether access tokens are transmitted via the browser for this client (defaults to <c>false</c>).
@@ -59,7 +65,7 @@ namespace IdentityServer4.Admin.ViewModels.Client
         [StringLength(2000)]
         public string PostLogoutRedirectUris { get; set; }
 
-        public bool RequireConsent { get; set; }
+        public bool RequireConsent { get; set; } = true;
 
         [Required] [StringLength(2000)] public string AllowedScopes { get; set; }
 
@@ -276,43 +282,43 @@ namespace IdentityServer4.Admin.ViewModels.Client
         {
             switch (AllowedGrantTypes)
             {
-                case IdentityServer4.Admin.Infrastructure.GrantTypes.Code:
+                case GrantTypes.Code:
                 {
                     return Models.GrantTypes.Code;
                 }
-                case IdentityServer4.Admin.Infrastructure.GrantTypes.Hybrid:
+                case GrantTypes.Hybrid:
                 {
                     return Models.GrantTypes.Hybrid;
                 }
-                case IdentityServer4.Admin.Infrastructure.GrantTypes.Implicit:
+                case GrantTypes.Implicit:
                 {
                     return Models.GrantTypes.Implicit;
                 }
-                case IdentityServer4.Admin.Infrastructure.GrantTypes.ClientCredentials:
+                case GrantTypes.ClientCredentials:
                 {
                     return Models.GrantTypes.ClientCredentials;
                 }
-                case IdentityServer4.Admin.Infrastructure.GrantTypes.DeviceFlow:
+                case GrantTypes.DeviceFlow:
                 {
                     return Models.GrantTypes.DeviceFlow;
                 }
-                case IdentityServer4.Admin.Infrastructure.GrantTypes.ResourceOwnerPassword:
+                case GrantTypes.ResourceOwnerPassword:
                 {
                     return Models.GrantTypes.ResourceOwnerPassword;
                 }
-                case IdentityServer4.Admin.Infrastructure.GrantTypes.CodeAndClientCredentials:
+                case GrantTypes.CodeAndClientCredentials:
                 {
                     return Models.GrantTypes.CodeAndClientCredentials;
                 }
-                case IdentityServer4.Admin.Infrastructure.GrantTypes.HybridAndClientCredentials:
+                case GrantTypes.HybridAndClientCredentials:
                 {
                     return Models.GrantTypes.HybridAndClientCredentials;
                 }
-                case IdentityServer4.Admin.Infrastructure.GrantTypes.ImplicitAndClientCredentials:
+                case GrantTypes.ImplicitAndClientCredentials:
                 {
                     return Models.GrantTypes.ImplicitAndClientCredentials;
                 }
-                case IdentityServer4.Admin.Infrastructure.GrantTypes.ResourceOwnerPasswordAndClientCredentials:
+                case GrantTypes.ResourceOwnerPasswordAndClientCredentials:
                 {
                     return Models.GrantTypes.ResourceOwnerPasswordAndClientCredentials;
                 }

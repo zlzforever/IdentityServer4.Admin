@@ -49,11 +49,9 @@ namespace IdentityServer4.Admin.Controllers
                     // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
                     return Redirect(model.ReturnUrl);
                 }
-                else
-                {
-                    // since we don't have a valid context, then we just go back to the home page
-                    return Redirect("~/");
-                }
+
+                // since we don't have a valid context, then we just go back to the home page
+                return Redirect("~/");
             }
 
             if (ModelState.IsValid)

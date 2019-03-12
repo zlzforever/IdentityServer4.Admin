@@ -46,10 +46,8 @@ namespace IdentityServer4.Admin.Controllers
             {
                 return Ok(new {Code = 200, Msg = "success"});
             }
-            else
-            {
-                return BadRequest(new {Code = 400, Msg = identityResult.Errors.First().Description});
-            }
+
+            return BadRequest(new {Code = 400, Msg = identityResult.Errors.First().Description});
         }
     }
 }

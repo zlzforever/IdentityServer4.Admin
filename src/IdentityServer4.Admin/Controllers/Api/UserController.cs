@@ -38,7 +38,7 @@ namespace IdentityServer4.Admin.Controllers.Api
 
             if (user.UserName == AdminConsts.AdminName)
             {
-                return BadRequest(new {Code = 400, Msg = $"Disable admin is not allowed"});
+                return BadRequest(new {Code = 400, Msg = "Disable admin is not allowed"});
             }
 
             var result = await _userManager.SetLockoutEnabledAsync(user, true);
@@ -80,7 +80,7 @@ namespace IdentityServer4.Admin.Controllers.Api
 
             if (user.UserName == AdminConsts.AdminName)
             {
-                return BadRequest(new {Code = 400, Msg = $"Delete admin is not allowed"});
+                return BadRequest(new {Code = 400, Msg = "Delete admin is not allowed"});
             }
 
             var result = await _userManager.DeleteAsync(user);
@@ -107,7 +107,7 @@ namespace IdentityServer4.Admin.Controllers.Api
 
             if (user.UserName == AdminConsts.AdminName)
             {
-                return BadRequest(new {Code = 400, Msg = $"Add role to admin is not allowed"});
+                return BadRequest(new {Code = 400, Msg = "Add role to admin is not allowed"});
             }
 
             var result = await _userManager.AddToRoleAsync(user, role);
@@ -126,7 +126,7 @@ namespace IdentityServer4.Admin.Controllers.Api
 
             if (user.UserName == AdminConsts.AdminName)
             {
-                return BadRequest(new {Code = 400, Msg = $"Remove role from admin is not allowed"});
+                return BadRequest(new {Code = 400, Msg = "Remove role from admin is not allowed"});
             }
 
             var role = await _roleManager.FindByIdAsync(roleId.ToString());

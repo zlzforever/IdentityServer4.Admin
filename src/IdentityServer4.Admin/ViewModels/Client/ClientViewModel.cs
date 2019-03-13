@@ -1,18 +1,22 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using IdentityServer4.Admin.Infrastructure;
+using IdentityServer4.EntityFramework.Mappers;
 using IdentityServer4.Models;
+using Microsoft.EntityFrameworkCore.Design;
 using GrantTypes = IdentityServer4.Admin.Infrastructure.GrantTypes;
 
 namespace IdentityServer4.Admin.ViewModels.Client
 {
-    public class CreateClientViewModel
+    public class ClientViewModel
     {
         /// <summary>
         /// Specifies if client is enabled (defaults to <c>true</c>)
         /// </summary>
         public bool Enabled { get; set; } = true;
-        
+
         /// <summary>
         /// Unique ID of the client
         /// </summary>
@@ -23,7 +27,6 @@ namespace IdentityServer4.Admin.ViewModels.Client
         /// <summary>
         /// Client display name (used for logging and consent screen)
         /// </summary>
-        [Required]
         [StringLength(200)]
         public string ClientName { get; set; }
 
@@ -48,14 +51,12 @@ namespace IdentityServer4.Admin.ViewModels.Client
         /// <value>
         /// The allowed CORS origins.
         /// </value>
-        [Required]
         [StringLength(2000)]
         public string AllowedCorsOrigins { get; set; }
 
         /// <summary>
         /// Specifies allowed URIs to return tokens or authorization codes to
         /// </summary>
-        [Required]
         [StringLength(2000)]
         public string RedirectUris { get; set; }
 
@@ -67,7 +68,7 @@ namespace IdentityServer4.Admin.ViewModels.Client
 
         public bool RequireConsent { get; set; } = true;
 
-        [Required] [StringLength(2000)] public string AllowedScopes { get; set; }
+        [StringLength(2000)] public string AllowedScopes { get; set; }
 
         /// <summary>
         /// Gets or sets the protocol type.
@@ -82,6 +83,8 @@ namespace IdentityServer4.Admin.ViewModels.Client
         /// If set to false, no client secret is needed to request tokens at the token endpoint (defaults to <c>true</c>)
         /// </summary>
         public bool RequireClientSecret { get; set; } = true;
+
+        [MinLength(8)] [MaxLength(100)] public string ClientSecrets { get; set; }
 
         /// <summary>
         /// Description of the 
@@ -275,10 +278,10 @@ namespace IdentityServer4.Admin.ViewModels.Client
         /// The device code lifetime.
         /// </value>
         public int DeviceCodeLifetime { get; set; } = 300;
-        
+
         public string IdentityProviderRestrictions { get; set; }
 
-        public ICollection<string> GetAllowedGrantTypes()
+        internal ICollection<string> GetAllowedGrantTypes()
         {
             switch (AllowedGrantTypes)
             {
@@ -325,6 +328,139 @@ namespace IdentityServer4.Admin.ViewModels.Client
             }
 
             throw new ArgumentException("不支持的授权类型");
+        }
+
+        internal void SetAllowedGrantTypes(ICollection<string> types)
+        {
+            AllowedGrantTypes = GetAllowedGrantTypes(types);
+        }
+
+        internal IdentityServer4.EntityFramework.Entities.Client ToClient()
+        {
+            var redirectUris = RedirectUris?.Split(new[] {"\r\n"}, StringSplitOptions.RemoveEmptyEntries)
+                .Where(cors => !string.IsNullOrWhiteSpace(cors) && cors.IsUrl()).ToList();
+            var allowedCorsOrigins = AllowedCorsOrigins?.Split(new[] {"\r\n"}, StringSplitOptions.RemoveEmptyEntries)
+                .Where(cors => !string.IsNullOrWhiteSpace(cors) && cors.IsUrl()).ToList();
+            var client = new Models.Client
+            {
+                AbsoluteRefreshTokenLifetime = AbsoluteRefreshTokenLifetime,
+                AccessTokenLifetime = AccessTokenLifetime,
+                AccessTokenType = AccessTokenType,
+                AllowAccessTokensViaBrowser = AllowAccessTokensViaBrowser,
+                AllowedCorsOrigins = allowedCorsOrigins,
+                AllowedGrantTypes = GetAllowedGrantTypes(),
+                AllowedScopes = AllowedScopes.Split(new[] {" "}, StringSplitOptions.RemoveEmptyEntries)
+                    .Where(cors => !string.IsNullOrWhiteSpace(cors)).ToList(),
+                AllowOfflineAccess = AllowOfflineAccess,
+                AllowPlainTextPkce = AllowPlainTextPkce,
+                AllowRememberConsent = AllowRememberConsent,
+                AlwaysIncludeUserClaimsInIdToken = AlwaysIncludeUserClaimsInIdToken,
+                AlwaysSendClientClaims = AlwaysSendClientClaims,
+                AuthorizationCodeLifetime = AuthorizationCodeLifetime,
+                BackChannelLogoutSessionRequired = BackChannelLogoutSessionRequired,
+                BackChannelLogoutUri = BackChannelLogoutUri,
+                ClientClaimsPrefix = ClientClaimsPrefix,
+                ClientId = ClientId,
+                ClientName = ClientName,
+
+//                ClientSecrets = dto.ClientSecrets.Split("\r\n", StringSplitOptions.RemoveEmptyEntries)
+//                    .Select(x => new Secret(x.Sha256())).ToList(),
+                ClientUri = ClientUri,
+                ConsentLifetime = ConsentLifetime,
+                Description = Description,
+                DeviceCodeLifetime = DeviceCodeLifetime,
+                Enabled = Enabled,
+                EnableLocalLogin = EnableLocalLogin,
+                FrontChannelLogoutSessionRequired = FrontChannelLogoutSessionRequired,
+                FrontChannelLogoutUri = FrontChannelLogoutUri,
+                IdentityProviderRestrictions =
+                    IdentityProviderRestrictions?.Split("\r\n", StringSplitOptions.RemoveEmptyEntries),
+                IdentityTokenLifetime = IdentityTokenLifetime,
+                IncludeJwtId = IncludeJwtId,
+                LogoUri = LogoUri,
+                PairWiseSubjectSalt = PairWiseSubjectSalt,
+                PostLogoutRedirectUris = PostLogoutRedirectUris?
+                    .Split(new[] {"\r\n"}, StringSplitOptions.RemoveEmptyEntries)
+                    .Where(cors => !string.IsNullOrWhiteSpace(cors) && cors.IsUrl()).ToList(),
+                // Properties
+                ProtocolType = ProtocolType,
+                RedirectUris = redirectUris,
+                RefreshTokenExpiration = RefreshTokenExpiration,
+                RefreshTokenUsage = RefreshTokenUsage,
+                RequireClientSecret = RequireClientSecret,
+                RequireConsent = RequireConsent,
+                RequirePkce = RequirePkce,
+                SlidingRefreshTokenLifetime = SlidingRefreshTokenLifetime,
+                UpdateAccessTokenClaimsOnRefresh = UpdateAccessTokenClaimsOnRefresh,
+                UserCodeType = UserCodeType,
+                UserSsoLifetime = UserSsoLifetime,
+            };
+            return client.ToEntity();
+        }
+
+        private GrantTypes GetAllowedGrantTypes(ICollection<string> types)
+        {
+            if (Equal(types, Models.GrantTypes.Code))
+            {
+                return GrantTypes.Code;
+            }
+
+            if (Equal(types, Models.GrantTypes.Implicit))
+            {
+                return GrantTypes.Implicit;
+            }
+
+            if (Equal(types, Models.GrantTypes.Hybrid))
+            {
+                return GrantTypes.Hybrid;
+            }
+
+            if (Equal(types, Models.GrantTypes.DeviceFlow))
+            {
+                return GrantTypes.DeviceFlow;
+            }
+
+            if (Equal(types, Models.GrantTypes.ClientCredentials))
+            {
+                return GrantTypes.ClientCredentials;
+            }
+
+            if (Equal(types, Models.GrantTypes.ResourceOwnerPassword))
+            {
+                return GrantTypes.ResourceOwnerPassword;
+            }
+
+            if (Equal(types, Models.GrantTypes.HybridAndClientCredentials))
+            {
+                return GrantTypes.HybridAndClientCredentials;
+            }
+
+            if (Equal(types, Models.GrantTypes.CodeAndClientCredentials))
+            {
+                return GrantTypes.CodeAndClientCredentials;
+            }
+
+            if (Equal(types, Models.GrantTypes.ImplicitAndClientCredentials))
+            {
+                return GrantTypes.ImplicitAndClientCredentials;
+            }
+
+            if (Equal(types, Models.GrantTypes.ResourceOwnerPasswordAndClientCredentials))
+            {
+                return GrantTypes.ResourceOwnerPasswordAndClientCredentials;
+            }
+
+            return GrantTypes.Implicit;
+        }
+
+        private bool Equal(ICollection<string> list1, ICollection<string> list2)
+        {
+            if (list1.Count != list2.Count)
+            {
+                return false;
+            }
+
+            return !list1.Except(list2).Any();
         }
     }
 }

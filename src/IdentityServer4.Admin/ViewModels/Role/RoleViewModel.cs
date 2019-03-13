@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace IdentityServer4.Admin.ViewModels.Role
 {
-    public class CreateRoleViewModel
+    public class RoleViewModel
     {
         /// <summary>
         /// 角色名称

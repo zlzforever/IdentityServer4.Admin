@@ -27,7 +27,6 @@ namespace IdentityServer4.Admin
         where TUserRole : IdentityUserRole<TKey>
         where TRoleClaim : IdentityRoleClaim<TKey>
     {
-
         DbSet<TUser> Users { get; set; }
 
         DbSet<TUserClaim> UserClaims { get; set; }
@@ -41,15 +40,29 @@ namespace IdentityServer4.Admin
         DbSet<TRole> Roles { get; set; }
 
         DbSet<TRoleClaim> RoleClaims { get; set; }
-        
+
         DbSet<IdentityClaim> IdentityClaims { get; set; }
-        
+
         DbSet<ApiResourceClaim> ApiResourceClaims { get; set; }
-        
+
         DbSet<ApiScope> ApiScopes { get; set; }
+
+        DbSet<ApiScopeClaim> ApiScopeClaims { get; set; }
+
+        DbSet<ClientSecret> ClientSecrets { get; set; }
+
+        DbSet<ClientGrantType> ClientGrantTypes { get; set; }
         
-        DbSet<ApiScopeClaim> ApiScopeClaims { get; set; }       
+        DbSet<ClientRedirectUri> ClientRedirectUris { get; set; }
         
+        DbSet<ClientPostLogoutRedirectUri> ClientPostLogoutRedirectUris { get; set; }
+        
+        DbSet<ClientScope> ClientScopes { get; set; }
+        
+        DbSet<ClientIdPRestriction> ClientIdPRestrictions { get; set; }
+        
+        DbSet<ClientCorsOrigin> ClientCorsOrigins { get; set; }
+
         /// <summary>
         /// Saves the changes.
         /// </summary>

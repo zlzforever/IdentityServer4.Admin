@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace IdentityServer4.Admin.ViewModels.IdentityResource
 {
-    public class CreateIdentityResourceViewModel
+    public class IdentityResourceViewModel
     {
         /// <summary>
         /// Indicates if this resource is enabled. Defaults to true.

@@ -1,4 +1,4 @@
-﻿@model IdentityServer4.Admin.ViewModels.Role.CreateRoleViewModel
+﻿@model IdentityServer4.Admin.ViewModels.Role.RoleViewModel
 
 @section breadcrumb{
     <li >
@@ -12,28 +12,10 @@
 
 <div class="col-xs-12">
     <div class="box">
-        @await Html.PartialAsync("_ValidationSummary")
-        @await Html.PartialAsync("_Information")
         <form action="/role/create?returnUrl=@ViewData["ReturnUrl"]" method="post">
+            @await Html.PartialAsync("_ValidationSummary")
             <div class="box-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Name</label>
-                            <input asp-for="Name" class="form-control" autocomplete="false" type="text">
-                            <span asp-validation-for="Name" class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Description</label>
-                            <input asp-for="Description" class="form-control" autocomplete="false" type="text">
-                            <span asp-validation-for="Description" class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>
+                @await Html.PartialAsync("Item", Model)
             </div>
             <!-- /.box-body -->
             <div class="box-footer clearfix">

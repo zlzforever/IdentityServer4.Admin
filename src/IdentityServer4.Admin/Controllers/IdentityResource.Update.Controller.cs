@@ -16,7 +16,7 @@ namespace IdentityServer4.Admin.Controllers
     {
         [Authorize(Roles = AdminConsts.AdminName)]
         [HttpPost("{id}")]
-        public async Task<IActionResult> UpdateAsync(int id, string returnUrl, UpdateIdentityResourceViewModel dto)
+        public async Task<IActionResult> UpdateAsync(int id, string returnUrl, IdentityResourceViewModel dto)
         {
             if (!ModelState.IsValid)
             {

@@ -1,69 +1,24 @@
-@model IdentityServer4.Admin.ViewModels.ApiResource.ViewApiResourceViewModel
+@model IdentityServer4.Admin.ViewModels.ApiResource.ApiResourceViewModel
 @{
     var submitUrl = $"{Context.Request.Path}?returnUrl={ViewData["ReturnUrl"]}";
 }
 
 @section breadcrumb{
     <li >
-        <a href="#">API Resource Scope</a>
+        <a href="#">API Resource</a>
     </li>
 }
 
 @section header{
-    API Resource Scope<small v-text="moduleDescription"></small>
+    API Resource<small v-text="moduleDescription"></small>
 }
 
 <div class="col-xs-12">
     <div class="box">
         <form action="@submitUrl" method="post">
             @await Html.PartialAsync("_ValidationSummary")
-            @await Html.PartialAsync("_Information")
             <div class="box-body">
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label>Name</label>
-                            <input asp-for="Name" class="form-control" autocomplete="false" type="text">
-                            <span asp-validation-for="Name" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label>DisplayName</label>
-                            <input asp-for="DisplayName" class="form-control" autocomplete="false" type="text">
-                            <span asp-validation-for="DisplayName" class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Description</label>
-                            <textarea style="height: 100px" asp-for="Description" class="form-control" autocomplete="false" type="text"></textarea>
-                            <span asp-validation-for="Description" class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>User Claims</label>
-                            <textarea style="height: 100px" asp-for="UserClaims" class="form-control" autocomplete="false" type="text"></textarea>
-                            <span asp-validation-for="UserClaims" class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label>Enabled</label>
-                            <select asp-for="Enabled" class="form-control select2" style="width: 100%;">
-                                <option value="True" selected="selected">True</option>
-                                <option value="False">False</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
+                @await Html.PartialAsync("Item", Model)
             </div>
             <!-- /.box-body -->
             <div class="box-footer clearfix">

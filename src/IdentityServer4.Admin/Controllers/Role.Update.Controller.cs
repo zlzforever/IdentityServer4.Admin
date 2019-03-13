@@ -10,7 +10,7 @@ namespace IdentityServer4.Admin.Controllers
     public partial class RoleController
     {
         [HttpPost("{roleId}")]
-        public async Task<IActionResult> UpdateAsync(Guid roleId, string returnUrl, ViewRoleViewModel dto)
+        public async Task<IActionResult> UpdateAsync(Guid roleId, string returnUrl, RoleViewModel dto)
         {
             var role = await _roleManager.Roles.FirstOrDefaultAsync(p => p.Id == roleId);
             if (role == null)

@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace IdentityServer4.Admin.ViewModels.ApiResource
 {
-    public class ViewApiResourceScopeViewModel
+    public class ApiResourceScopeViewModel
     {
         /// <summary>
         /// The unique name of the resource.

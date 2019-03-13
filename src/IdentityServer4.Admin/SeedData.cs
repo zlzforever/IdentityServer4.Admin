@@ -83,9 +83,10 @@ namespace IdentityServer4.Admin
             }
 
             var userMgr2 = _serviceProvider.GetRequiredService<UserManager<User>>();
-            if (_dbContext.Users.Count() < 50)
+            var testUserCount = 15;
+            if (_dbContext.Users.Count() < testUserCount)
             {
-                for (int i = 0; i < 55; ++i)
+                for (int i = 0; i < testUserCount; ++i)
                 {
                     try
                     {

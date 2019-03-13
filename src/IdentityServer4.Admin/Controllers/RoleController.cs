@@ -67,7 +67,7 @@ namespace IdentityServer4.Admin.Controllers
             }
 
             ViewData["ReturnUrl"] = returnUrl;
-            return View("View", Mapper.Map<ViewRoleViewModel>(role));
+            return View("View", Mapper.Map<RoleViewModel>(role));
         }
     }
 }

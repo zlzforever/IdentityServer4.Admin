@@ -1,0 +1,437 @@
+@model IdentityServer4.Admin.ViewModels.Client.ClientViewModel
+@{
+    var renderSecrets = (bool) ViewData["RenderSecrets"];
+}
+<div class="chart tab-pane active" id="name-setting" style="position: relative; height: 700px; padding-top: 10px;">
+    <div class="col-xs-12">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>ClientId</label>
+                    <input asp-for="ClientId" class="form-control" type="text">
+                    <span asp-validation-for="ClientId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>ClientName</label>
+                    <input asp-for="ClientName" class="form-control" type="text">
+                    <span asp-validation-for="ClientName" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="chart tab-pane" id="basic-setting" style="position: relative; height: 700px; padding-top: 10px;">
+    <div class="col-xs-12">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>Enabled</label>
+                    <select asp-for="Enabled" class="form-control select2">
+                        <option value="True" selected="selected">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>ProtocolType</label>
+                    <select asp-for="ProtocolType" class="form-control select2">
+                        <option value="oidc" selected="selected">OpenIdConnect</option>
+                        <option value="wsfed">WsFederation</option>
+                        <option value="saml2p">Saml2p</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>RequireClientSecret</label>
+                    <select asp-for="RequireClientSecret" class="form-control select2">
+                        <option value="True" selected="selected">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>RequirePkce</label>
+                    <select asp-for="RequirePkce" class="form-control select2">
+                        <option value="True" selected="selected">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>AllowPlainTextPkce</label>
+                    <select asp-for="AllowPlainTextPkce" class="form-control select2">
+                        <option value="True" selected="selected">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>OfflineAccess</label>
+                    <select asp-for="AllowOfflineAccess" class="form-control select2">
+                        <option value="True" selected="selected">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>AllowAccessTokensViaBrowser</label>
+                    <select asp-for="AllowAccessTokensViaBrowser" class="form-control select2">
+                        <option value="True" selected="selected">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>AllowedGrantTypes</label>
+                    <select asp-for="AllowedGrantTypes" class="form-control select2">
+                        <option value="Code">Code</option>
+                        <option value="Hybrid">Hybrid</option>
+                        <option value="Implicit">Implicit</option>
+                        <option value="ClientCredentials">ClientCredentials</option>
+                        <option value="DeviceFlow">DeviceFlow</option>
+                        <option value="ResourceOwnerPassword">ResourceOwnerPassword</option>
+                        <option value="CodeAndClientCredentials">CodeAndClientCredentials</option>
+                        <option value="HybridAndClientCredentials">HybridAndClientCredentials</option>
+                        <option value="ImplicitAndClientCredentials">ImplicitAndClientCredentials</option>
+                        <option value="ResourceOwnerPasswordAndClientCredentials">ResourceOwnerPasswordAndClientCredentials</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        @if (renderSecrets)
+        {
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>ClientSecrets</label>
+                        <input asp-for="ClientSecrets" class="form-control" type="text">
+                        <span asp-validation-for="ClientSecrets" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>RedirectUris<small class="text-muted"> split via newline</small></label>
+                    <textarea style="height: 60px;" asp-for="RedirectUris" class="form-control" type="text"></textarea>
+                    <span asp-validation-for="RedirectUris" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Scopes<small class="text-muted"> split via spacing</small></label>
+                    <textarea style="height: 60px;" asp-for="AllowedScopes" class="form-control" type="text"></textarea>
+                    <span asp-validation-for="AllowedScopes" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea style="height: 60px;" asp-for="Description" class="form-control" type="text"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="chart tab-pane" id="authentication-setting" style="position: relative; height: 700px; padding-top: 10px;">
+    <div class="col-xs-12">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>FrontChannelLogoutSessionRequired</label>
+                    <select asp-for="FrontChannelLogoutSessionRequired" class="form-control select2">
+                        <option value="True" selected="selected">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>FrontChannelLogoutUri</label>
+                    <input asp-for="FrontChannelLogoutUri" class="form-control" type="text">
+                    <span asp-validation-for="FrontChannelLogoutUri" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>BackChannelLogoutSessionRequired</label>
+                    <select asp-for="BackChannelLogoutSessionRequired" class="form-control select2">
+                        <option value="True" selected="selected">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>BackChannelLogoutUri</label>
+                    <input asp-for="BackChannelLogoutUri" class="form-control" type="text">
+                    <span asp-validation-for="BackChannelLogoutUri" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>EnableLocalLogin</label>
+                    <select asp-for="EnableLocalLogin" class="form-control select2">
+                        <option value="True" selected="selected">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>UserSsoLifetime</label>
+                    <input asp-for="UserSsoLifetime" class="form-control" type="number">
+                    <span asp-validation-for="UserSsoLifetime" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    <label>IdentityProviderRestrictions<small class="text-muted"> split via newline</small></label>
+                    <textarea style="height: 90px;" asp-for="IdentityProviderRestrictions" class="form-control" type="text"></textarea>
+                    <span asp-validation-for="IdentityProviderRestrictions" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    <label>PostLogoutRedirectUris<small class="text-muted"> split via newline</small></label>
+                    <textarea style="height: 90px;" asp-for="PostLogoutRedirectUris" class="form-control" type="text"></textarea>
+                    <span asp-validation-for="PostLogoutRedirectUris" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="chart tab-pane" id="token-setting" style="position: relative; height: 700px; padding-top: 10px;">
+    <div class="col-xs-12">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>IdentityTokenLifetime</label>
+                    <input asp-for="IdentityTokenLifetime" class="form-control" type="number">
+                    <span asp-validation-for="IdentityTokenLifetime" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>AccessTokenLifetime</label>
+                    <input asp-for="AccessTokenLifetime" class="form-control" type="number">
+                    <span asp-validation-for="AccessTokenLifetime" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>AccessTokenType</label>
+                    <select asp-for="AccessTokenType" class="form-control select2">
+                        <option value="Jwt">Jwt</option>
+                        <option value="Reference">Reference</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>AuthorizationCodeLifetime</label>
+                    <input asp-for="AuthorizationCodeLifetime" class="form-control" type="number">
+                    <span asp-validation-for="AuthorizationCodeLifetime" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>AbsoluteRefreshTokenLifetime</label>
+                    <input asp-for="AbsoluteRefreshTokenLifetime" class="form-control" type="number">
+                    <span asp-validation-for="AbsoluteRefreshTokenLifetime" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>SlidingRefreshTokenLifetime</label>
+                    <input asp-for="SlidingRefreshTokenLifetime" class="form-control" type="number">
+                    <span asp-validation-for="SlidingRefreshTokenLifetime" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>RefreshTokenUsage</label>
+                    <select asp-for="RefreshTokenUsage" class="form-control select2">
+                        <option value="OneTimeOnly">OneTimeOnly</option>
+                        <option value="ReUse">ReUse</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>TokenExpiration</label>
+                    <select asp-for="RefreshTokenExpiration" class="form-control select2">
+                        <option value="Sliding">Sliding</option>
+                        <option value="Absolute">Absolute</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>UpdateAccessTokenClaimsOnRefresh</label>
+                    <select asp-for="UpdateAccessTokenClaimsOnRefresh" class="form-control select2">
+                        <option value="True" selected="selected">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>IncludeJwtId</label>
+                    <select asp-for="IncludeJwtId" class="form-control select2">
+                        <option value="True" selected="selected">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>AlwaysSendClientClaims</label>
+                    <select asp-for="AlwaysSendClientClaims" class="form-control select2">
+                        <option value="True" selected="selected">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>AlwaysIncludeUserClaimsInIdToken</label>
+                    <select asp-for="AlwaysIncludeUserClaimsInIdToken" class="form-control select2">
+                        <option value="True" selected="selected">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>ClientClaimsPrefix</label>
+                    <input asp-for="ClientClaimsPrefix" class="form-control" type="text">
+                    <span asp-validation-for="ClientClaimsPrefix" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>PairWiseSubjectSalt</label>
+                    <input asp-for="PairWiseSubjectSalt" class="form-control" type="text">
+                    <span asp-validation-for="PairWiseSubjectSalt" class="text-danger"></span>
+                </div>
+            </div>
+
+        </div>
+        @* <div class="row"> *@
+        @*     <div class="col-md-8"> *@
+        @*         <div class="form-group"> *@
+        @*             <label>Claims<small class="text-muted"> split via newline</small></label> *@
+        @*             <textarea style="height: 90px;" asp-for="Claims" class="form-control" type="text"></textarea> *@
+        @*             <span asp-validation-for="Claims" class="text-danger"></span> *@
+        @*         </div> *@
+        @*     </div> *@
+        @* </div> *@
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    <label>AllowedCorsOrigins<small class="text-muted"> split via newline</small></label>
+                    <textarea style="height: 90px;" asp-for="AllowedCorsOrigins" class="form-control" type="text"></textarea>
+                    <span asp-validation-for="AllowedCorsOrigins" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="chart tab-pane" id="consent-setting" style="position: relative; height: 700px; padding-top: 10px;">
+    <div class="col-xs-12">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>RequireConsent</label>
+                    <select asp-for="RequireConsent" class="form-control select2">
+                        <option value="True" selected="selected">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>AllowRememberConsent</label>
+                    <select asp-for="AllowRememberConsent" class="form-control select2">
+                        <option value="True" selected="selected">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>ClientUri</label>
+                    <input asp-for="ClientUri" class="form-control" type="text">
+                    <span asp-validation-for="ClientUri" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>LogoUri</label>
+                    <input asp-for="LogoUri" class="form-control" type="text">
+                    <span asp-validation-for="LogoUri" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="chart tab-pane" id="deviceFlow-setting" style="position: relative; height: 700px; padding-top: 10px;">
+    <div class="col-xs-12">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>UserCodeType</label>
+                    <input asp-for="UserCodeType" class="form-control" type="text">
+                    <span asp-validation-for="UserCodeType" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>DeviceCodeLifetime</label>
+                    <input asp-for="DeviceCodeLifetime" class="form-control" type="number">
+                    <span asp-validation-for="DeviceCodeLifetime" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

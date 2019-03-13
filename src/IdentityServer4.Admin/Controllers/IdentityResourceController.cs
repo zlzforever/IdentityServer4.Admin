@@ -63,7 +63,7 @@ namespace IdentityServer4.Admin.Controllers
             var claims = await _dbContext.IdentityClaims.Where(x => x.IdentityResourceId == identityResource.Id)
                 .Select(x => x.Type)
                 .ToListAsync();
-            var viewModel = new UpdateIdentityResourceViewModel
+            var viewModel = new IdentityResourceViewModel
             {
                 Name = identityResource.Name,
                 Enabled = identityResource.Enabled,

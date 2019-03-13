@@ -17,3 +17,7 @@ body {
     font-size: 12px;
     background: #d2d6de
 }
+
+span.select2 {
+    width: 100% !important;
+}

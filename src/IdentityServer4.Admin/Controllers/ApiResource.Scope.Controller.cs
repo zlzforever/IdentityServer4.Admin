@@ -63,12 +63,12 @@ namespace IdentityServer4.Admin.Controllers
             }
 
             ViewData["ApiResourceId"] = id;
-            return View("CreateScope", new CreateApiResourceScopeViewModel());
+            return View("CreateScope", new ApiResourceScopeViewModel());
         }
 
         [Authorize(Roles = AdminConsts.AdminName)]
         [HttpPost("{id}/scope/create")]
-        public async Task<IActionResult> CreateScopeAsync(int id, CreateApiResourceScopeViewModel dto)
+        public async Task<IActionResult> CreateScopeAsync(int id, ApiResourceScopeViewModel dto)
         {
             if (!ModelState.IsValid)
             {
@@ -155,7 +155,7 @@ namespace IdentityServer4.Admin.Controllers
                 return BadRequest();
             }
 
-            var viewModel = new ViewApiResourceScopeViewModel
+            var viewModel = new ApiResourceScopeViewModel
             {
                 Name = scope.Name,
                 Required = scope.Required,
@@ -176,7 +176,7 @@ namespace IdentityServer4.Admin.Controllers
         [Authorize(Roles = AdminConsts.AdminName)]
         [HttpPost("{resourceId}/scope/{id}")]
         public async Task<IActionResult> UpdateScopeAsync(int resourceId, int id, string returnUrl,
-            ViewApiResourceScopeViewModel dto)
+            ApiResourceScopeViewModel dto)
         {
             if (!ModelState.IsValid)
             {

@@ -62,7 +62,7 @@ namespace IdentityServer4.Admin.Controllers
             var claims = await _dbContext.ApiResourceClaims.Where(x => x.ApiResourceId == resource.Id)
                 .Select(x => x.Type)
                 .ToListAsync();
-            var viewModel = new ViewApiResourceViewModel
+            var viewModel = new ApiResourceViewModel
             {
                 Name = resource.Name,
                 Enabled = resource.Enabled,

@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace IdentityServer4.Admin.ViewModels.ApiResource
 {
-    public class ViewApiResourceViewModel
+    public class ApiResourceViewModel
     {
         /// <summary>
         /// Indicates if this resource is enabled. Defaults to true.

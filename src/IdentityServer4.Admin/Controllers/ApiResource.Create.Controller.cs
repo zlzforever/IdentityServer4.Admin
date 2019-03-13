@@ -18,12 +18,12 @@ namespace IdentityServer4.Admin.Controllers
         public Task<IActionResult> CreateAsync(string returnUrl)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            return Task.FromResult((IActionResult) View("Create", new CreateApiResourceViewModel()));
+            return Task.FromResult((IActionResult) View("Create", new ApiResourceViewModel()));
         }
 
         [Authorize(Roles = AdminConsts.AdminName)]
         [HttpPost("create")]
-        public async Task<IActionResult> CreateAsync(string returnUrl, CreateApiResourceViewModel dto)
+        public async Task<IActionResult> CreateAsync(string returnUrl, ApiResourceViewModel dto)
         {
             if (!ModelState.IsValid)
             {

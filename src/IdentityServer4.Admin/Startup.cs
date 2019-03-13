@@ -178,9 +178,9 @@ namespace IdentityServer4.Admin
             Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<CreateUserViewModel, User>();
-                cfg.CreateMap<Role, ViewRoleViewModel>();
+                cfg.CreateMap<Role, RoleViewModel>();
                 cfg.CreateMap<Role, ViewUserRoleViewModel>();
-                cfg.CreateMap<CreateRoleViewModel, Role>();
+                cfg.CreateMap<RoleViewModel, Role>();
                 cfg.CreateMap<UpdateProfileViewModel, User>();
                 cfg.CreateMap<UpdateProfileViewModel, ProfileViewModel>();
                 cfg.CreateMap<User, ListUserItemViewModel>();

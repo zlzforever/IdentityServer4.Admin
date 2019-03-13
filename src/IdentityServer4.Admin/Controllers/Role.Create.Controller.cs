@@ -13,7 +13,7 @@ namespace IdentityServer4.Admin.Controllers
         public Task<IActionResult> CreateAsync(string returnUrl)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            return Task.FromResult<IActionResult>(View("Create", new CreateRoleViewModel()));
+            return Task.FromResult<IActionResult>(View("Create", new RoleViewModel()));
         }
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace IdentityServer4.Admin.Controllers
         /// <param name="dto">角色 DTO</param>
         /// <returns>创建结果</returns>
         [HttpPost("create")]
-        public async Task<IActionResult> CreateAsync(string returnUrl, CreateRoleViewModel dto)
+        public async Task<IActionResult> CreateAsync(string returnUrl, RoleViewModel dto)
         {
             if (!ModelState.IsValid)
             {

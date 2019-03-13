@@ -70,16 +70,60 @@ namespace IdentityServer4.Admin.Controllers
                 return NotFound();
             }
 
-            var viewModel = new ViewClientViewModel();
+            // 47个参数
+            var viewModel = new ClientViewModel();
             viewModel.AbsoluteRefreshTokenLifetime = client.AbsoluteRefreshTokenLifetime;
             viewModel.AccessTokenLifetime = client.AccessTokenLifetime;
             viewModel.AccessTokenType = (AccessTokenType) client.AccessTokenType;
             viewModel.AllowAccessTokensViaBrowser = client.AllowAccessTokensViaBrowser;
-            viewModel.AllowedCorsOrigins = String.Join(";", client.AllowedCorsOrigins);
-            // viewModel.AllowedGrantTypes = client.AllowedGrantTypes.FirstOrDefault();
-            viewModel.IdentityProviderRestrictions = string.Join(";", client.IdentityProviderRestrictions);
+            viewModel.AllowedCorsOrigins = string.Join(";", client.AllowedCorsOrigins.Select(x => x.Origin));
+            viewModel.SetAllowedGrantTypes(client.AllowedGrantTypes.Select(x => x.GrantType).ToList());
+            viewModel.AllowedScopes = string.Join(" ", client.AllowedScopes.Select(x => x.Scope));
+            viewModel.AllowOfflineAccess = client.AllowOfflineAccess;
+            viewModel.AllowPlainTextPkce = client.AllowPlainTextPkce;
+            viewModel.AllowRememberConsent = client.AllowRememberConsent;
+            viewModel.AlwaysIncludeUserClaimsInIdToken = client.AlwaysIncludeUserClaimsInIdToken;
+            viewModel.AlwaysSendClientClaims = client.AlwaysSendClientClaims;
+            viewModel.AuthorizationCodeLifetime = client.AuthorizationCodeLifetime;
+            viewModel.BackChannelLogoutSessionRequired = client.BackChannelLogoutSessionRequired;
+            viewModel.BackChannelLogoutUri = client.BackChannelLogoutUri;
+            // viewModel.Claims = string.Join(" ", client.Claims.Select(x => x.Type));
+            viewModel.ClientClaimsPrefix = client.ClientClaimsPrefix;
+            viewModel.ClientId = client.ClientId;
+            viewModel.ClientName = client.ClientName;
+            viewModel.ClientUri = client.ClientUri;
+            viewModel.ConsentLifetime = client.ConsentLifetime;
+            viewModel.Description = client.Description;
+            viewModel.DeviceCodeLifetime = client.DeviceCodeLifetime;
+            viewModel.Enabled = client.Enabled;
+            viewModel.EnableLocalLogin = client.EnableLocalLogin;
+            viewModel.FrontChannelLogoutSessionRequired = client.FrontChannelLogoutSessionRequired;
+            viewModel.FrontChannelLogoutUri = client.FrontChannelLogoutUri;
+            viewModel.IdentityProviderRestrictions =
+                string.Join(" ", client.IdentityProviderRestrictions.Select(x => x.Provider));
+            viewModel.IdentityTokenLifetime = client.IdentityTokenLifetime;
+            viewModel.IncludeJwtId = client.IncludeJwtId;
+            viewModel.LogoUri = client.LogoUri;
+            viewModel.PairWiseSubjectSalt = client.PairWiseSubjectSalt;
+            viewModel.PostLogoutRedirectUris =
+                string.Join(";", client.PostLogoutRedirectUris.Select(x => x.PostLogoutRedirectUri));
+            // Properties
+            viewModel.ProtocolType = client.ProtocolType;
+            viewModel.RedirectUris = string.Join(";", client.RedirectUris.Select(x => x.RedirectUri));
+            viewModel.RefreshTokenExpiration = (TokenExpiration) client.RefreshTokenExpiration;
+            viewModel.RefreshTokenUsage = (TokenUsage) client.RefreshTokenUsage;
+            viewModel.RequireClientSecret = client.RequireClientSecret;
+            viewModel.ClientSecrets = string.Join(Environment.NewLine, client.ClientSecrets.Select(x => x.Value));
+            viewModel.RequireConsent = client.RequireConsent;
+            viewModel.RequirePkce = client.RequirePkce;
+            viewModel.SlidingRefreshTokenLifetime = client.SlidingRefreshTokenLifetime;
+            viewModel.UpdateAccessTokenClaimsOnRefresh = client.UpdateAccessTokenClaimsOnRefresh;
+            viewModel.UserCodeType = client.UserCodeType;
+            viewModel.UserSsoLifetime = client.UserSsoLifetime;
 
             ViewData["ReturnUrl"] = returnUrl;
+            ViewData["RenderSecrets"] = true;
+
             return View("View", viewModel);
         }
 
@@ -102,7 +146,7 @@ namespace IdentityServer4.Admin.Controllers
                 return NotFound();
             }
 
-            var dic = new Dictionary<string, object>
+            var dict = new Dictionary<string, object>
             {
                 {"Enabled", client.Enabled},
                 {"ClientId", client.ClientId},
@@ -180,8 +224,15 @@ namespace IdentityServer4.Admin.Controllers
                 {"UserCodeType", client.UserCodeType},
                 {"DeviceCodeLifetime", client.DeviceCodeLifetime}
             };
+            var sortDict = new Dictionary<string, object>();
+            var keys = dict.Keys.ToList();
+            keys.Sort();
+            foreach (var key in keys)
+            {
+                sortDict.Add(key, dict[key]);
+            }
 
-            return View("Detail", dic);
+            return new JsonResult(dict);
         }
     }
 }

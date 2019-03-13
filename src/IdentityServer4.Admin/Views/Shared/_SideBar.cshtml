@@ -3,12 +3,12 @@
     <li class="header">HEADER</li>
     @if ((bool) ViewData["IsAdmin"])
     {
-        <li class="active" id="MenuHome">
+        <li class="active menu" id="MenuHome">
             <a href="/">
                 <i class="fa fa-area-chart"></i><span>Home</span>
             </a>
         </li>
-        <li id="MenuBasic" class="treeview menu-open">
+        <li id="MenuBasic" class="treeview menu-open menu">
             <a>
                 <i class="fa fa-book"></i><span>Basic</span>
             </a>
@@ -21,37 +21,37 @@
                 </li>
             </ul>
         </li>
-        <li id="MenuRole">
+        <li id="MenuRole" class="menu">
             <a href="/role">
                 <i class="fa fa-graduation-cap"></i><span>Role</span>
             </a>
         </li>
-        <li id="MenuUser">
+        <li id="MenuUser" class="menu">
             <a href="/user">
                 <i class="fa fa-user"></i><span>User</span>
             </a>
         </li>
-        <li id="MenuIdentityResource">
+        <li id="MenuIdentityResource" class="menu">
             <a href="/identity-resource">
                 <i class="fa fa-book"></i><span>Identity Resource</span>
             </a>
         </li>
-        <li id="MenuApiResource">
+        <li id="MenuApiResource" class="menu">
             <a href="/api-resource">
                 <i class="fa fa-book"></i><span>API Resource</span>
             </a>
         </li>
-        <li id="MenuClient">
+        <li id="MenuClient" class="menu">
             <a href="/client">
                 <i class="fa fa-desktop"></i><span>Client</span>
             </a>
         </li>
-        <li id="MenuGrant">
+        <li id="MenuGrant" class="menu">
             <a href="/grant">
                 <i class="fa fa-history"></i><span>Grant</span>
             </a>
         </li>
-        <li id="MenuDiagnostic">
+        <li id="MenuDiagnostic" class="menu">
             <a href="/diagnostic">
                 <i class="fa fa-flask"></i><span>Diagnostic</span>
             </a>
@@ -59,7 +59,7 @@
     }
     else
     {
-        <li id="MenuBasic" class="treeview menu-open">
+        <li id="MenuBasic" class="treeview menu-open menu">
             <a>
                 <i class="fa fa-book"></i><span>Basic</span>
             </a>
@@ -72,12 +72,12 @@
                 </li>
             </ul>
         </li>
-        <li id="MenuGrant">
+        <li id="MenuGrant" class="menu">
             <a href="/grant">
                 <i class="fa fa-history"></i><span>Grant</span>
             </a>
         </li>
-        <li id="MenuDiagnostic">
+        <li id="MenuDiagnostic" class="menu">
             <a href="/diagnostic">
                 <i class="fa fa-flask"></i><span>Diagnostic</span>
             </a>

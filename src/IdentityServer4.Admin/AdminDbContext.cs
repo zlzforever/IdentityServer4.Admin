@@ -75,6 +75,15 @@ namespace IdentityServer4.Admin
 
         public DbSet<ApiScopeClaim> ApiScopeClaims { get; set; }
 
+        public DbSet<ClientSecret> ClientSecrets { get; set; }
+
+        public DbSet<ClientGrantType> ClientGrantTypes { get; set; }
+        public DbSet<ClientRedirectUri> ClientRedirectUris { get; set; }
+        public DbSet<ClientPostLogoutRedirectUri> ClientPostLogoutRedirectUris { get; set; }
+        public DbSet<ClientScope> ClientScopes { get; set; }
+        public DbSet<ClientIdPRestriction> ClientIdPRestrictions { get; set; }
+        public DbSet<ClientCorsOrigin> ClientCorsOrigins { get; set; }
+
         public AdminDbContext()
         {
         }

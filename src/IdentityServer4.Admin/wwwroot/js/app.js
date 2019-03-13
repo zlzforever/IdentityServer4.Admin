@@ -154,7 +154,7 @@ app.ui.clearBusy = function () {
     $("#loading").css("display", "none");
 };
 app.activeMenu = function (...ids) {
-    $("li.active").removeClass('active');
+    $("li.menu").removeClass('active');
     ids.forEach((id) => {
         $("#Menu" + id).addClass('active');
     });

@@ -35,7 +35,7 @@ Then change `ConnectionString` to your database connection string in the appsett
         
 #### Start from browser
 
-        http://localhost:7896
+        http://localhost:5566
 
  Default administrator account: admin  1qazZAQ!
 

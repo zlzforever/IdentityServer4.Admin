@@ -14,6 +14,7 @@ ProjectSection(SolutionItems) = preProject
 	restart.sh = restart.sh
 	push.sh = push.sh
 	reset.sh = reset.sh
+	pushToDockerhub.sh = pushToDockerhub.sh
 EndProjectSection
 EndProject
 Global

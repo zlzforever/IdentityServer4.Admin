@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 cd src/IdentityServer4.Admin
-bower update
+yarn install
 cd ../..
 docker build -t ids4admin .
 docker tag ids4admin registry.cn-shanghai.aliyuncs.com/zlzforever/ids4admin

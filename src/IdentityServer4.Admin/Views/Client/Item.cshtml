@@ -2,7 +2,7 @@
 @{
     var renderSecrets = (bool) ViewData["RenderSecrets"];
 }
-<div class="chart tab-pane active" id="name-setting" style="position: relative; height: 700px; padding-top: 10px;">
+<div class="chart tab-pane active" id="name-setting" style="position: relative; height: 600px; padding-top: 10px;">
     <div class="col-xs-12">
         <div class="row">
             <div class="col-md-3">
@@ -22,7 +22,7 @@
         </div>
     </div>
 </div>
-<div class="chart tab-pane" id="basic-setting" style="position: relative; height: 700px; padding-top: 10px;">
+<div class="chart tab-pane" id="basic-setting" style="position: relative; height: 600px; padding-top: 10px;">
     <div class="col-xs-12">
         <div class="row">
             <div class="col-md-2">
@@ -57,15 +57,6 @@
         <div class="row">
             <div class="col-md-2">
                 <div class="form-group">
-                    <label>RequirePkce</label>
-                    <select asp-for="RequirePkce" class="form-control select2">
-                        <option value="True" selected="selected">True</option>
-                        <option value="False">False</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="form-group">
                     <label>AllowPlainTextPkce</label>
                     <select asp-for="AllowPlainTextPkce" class="form-control select2">
                         <option value="True" selected="selected">True</option>
@@ -82,8 +73,6 @@
                     </select>
                 </div>
             </div>
-        </div>
-        <div class="row">
             <div class="col-md-2">
                 <div class="form-group">
                     <label>AllowAccessTokensViaBrowser</label>
@@ -95,7 +84,16 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>RequirePkce</label>
+                    <select asp-for="RequirePkce" class="form-control select2">
+                        <option value="True" selected="selected">True</option>
+                        <option value="False">False</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
                 <div class="form-group">
                     <label>AllowedGrantTypes</label>
                     <select asp-for="AllowedGrantTypes" class="form-control select2">
@@ -154,7 +152,7 @@
         </div>
     </div>
 </div>
-<div class="chart tab-pane" id="authentication-setting" style="position: relative; height: 700px; padding-top: 10px;">
+<div class="chart tab-pane" id="authentication-setting" style="position: relative; height: 600px; padding-top: 10px;">
     <div class="col-xs-12">
         <div class="row">
             <div class="col-md-2">
@@ -230,7 +228,7 @@
         </div>
     </div>
 </div>
-<div class="chart tab-pane" id="token-setting" style="position: relative; height: 700px; padding-top: 10px;">
+<div class="chart tab-pane" id="token-setting" style="position: relative; height: 600px; padding-top: 10px;">
     <div class="col-xs-12">
         <div class="row">
             <div class="col-md-2">
@@ -373,7 +371,7 @@
         </div>
     </div>
 </div>
-<div class="chart tab-pane" id="consent-setting" style="position: relative; height: 700px; padding-top: 10px;">
+<div class="chart tab-pane" id="consent-setting" style="position: relative; height: 600px; padding-top: 10px;">
     <div class="col-xs-12">
         <div class="row">
             <div class="col-md-2">
@@ -415,7 +413,7 @@
         </div>
     </div>
 </div>
-<div class="chart tab-pane" id="deviceFlow-setting" style="position: relative; height: 700px; padding-top: 10px;">
+<div class="chart tab-pane" id="deviceFlow-setting" style="position: relative; height: 600px; padding-top: 10px;">
     <div class="col-xs-12">
         <div class="row">
             <div class="col-md-3">

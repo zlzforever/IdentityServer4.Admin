@@ -16,9 +16,9 @@
 
 2. *Change docker repository to Ali docker repository* because i only push to Ali repository
 
-#### Prepare SqlServer
+#### Prepare SqlServer/MySql
 
-+ Right now only support SqlServer
++ Right now only support SqlServer/MySql
 
 #### Prepare configuration
 
@@ -26,7 +26,7 @@
         $ sudo cd ~/ids4admin2
         $ sudo curl https://raw.githubusercontent.com/zlzforever/IdentityServer4.Admin/master/src/IdentityServer4.Admin/appsettings.json -O
 
-Then change `ConnectionString` to your database connection string in the appsettings.json
+Then change `ConnectionString` to your database connection string in the appsettings.json, make sure `DatabaseProvider` is correct for your database
 
 #### Pull & start docker images
 

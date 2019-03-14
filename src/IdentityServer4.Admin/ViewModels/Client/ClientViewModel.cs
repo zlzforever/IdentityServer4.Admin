@@ -159,36 +159,37 @@ namespace IdentityServer4.Admin.ViewModels.Client
         /// <summary>
         /// Lifetime of identity token in seconds (defaults to 300 seconds / 5 minutes)
         /// </summary>
-        [Range(10, int.MaxValue)]
+        [Range(1, int.MaxValue)]
         public int IdentityTokenLifetime { get; set; } = 300;
 
         /// <summary>
         /// Lifetime of access token in seconds (defaults to 3600 seconds / 1 hour)
         /// </summary>
-        [Range(10, int.MaxValue)]
+        [Range(1, int.MaxValue)]
         public int AccessTokenLifetime { get; set; } = 3600;
 
         /// <summary>
         /// Lifetime of authorization code in seconds (defaults to 300 seconds / 5 minutes)
         /// </summary>
-        [Range(10, int.MaxValue)]
+        [Range(1, int.MaxValue)]
         public int AuthorizationCodeLifetime { get; set; } = 300;
 
         /// <summary>
         /// Maximum lifetime of a refresh token in seconds. Defaults to 2592000 seconds / 30 days
         /// </summary>
-        [Range(10, int.MaxValue)]
+        [Range(1, int.MaxValue)]
         public int AbsoluteRefreshTokenLifetime { get; set; } = 2592000;
 
         /// <summary>
         /// Sliding lifetime of a refresh token in seconds. Defaults to 1296000 seconds / 15 days
         /// </summary>
-        [Range(10, int.MaxValue)]
+        [Range(1, int.MaxValue)]
         public int SlidingRefreshTokenLifetime { get; set; } = 1296000;
 
         /// <summary>
         /// Lifetime of a user consent in seconds. Defaults to null (no expiration)
         /// </summary>
+        [Range(1, int.MaxValue)]
         public int? ConsentLifetime { get; set; } = null;
 
         /// <summary>
@@ -260,6 +261,7 @@ namespace IdentityServer4.Admin.ViewModels.Client
         /// <summary>
         /// The maximum duration (in seconds) since the last time the user authenticated.
         /// </summary>
+        [Range(1, int.MaxValue)]
         public int? UserSsoLifetime { get; set; }
 
         /// <summary>
@@ -277,6 +279,7 @@ namespace IdentityServer4.Admin.ViewModels.Client
         /// <value>
         /// The device code lifetime.
         /// </value>
+        [Range(1, int.MaxValue)]
         public int DeviceCodeLifetime { get; set; } = 300;
 
         public string IdentityProviderRestrictions { get; set; }
@@ -349,7 +352,7 @@ namespace IdentityServer4.Admin.ViewModels.Client
                 AllowAccessTokensViaBrowser = AllowAccessTokensViaBrowser,
                 AllowedCorsOrigins = allowedCorsOrigins,
                 AllowedGrantTypes = GetAllowedGrantTypes(),
-                AllowedScopes = AllowedScopes.Split(new[] {" "}, StringSplitOptions.RemoveEmptyEntries)
+                AllowedScopes = AllowedScopes?.Split(new[] {" "}, StringSplitOptions.RemoveEmptyEntries)
                     .Where(cors => !string.IsNullOrWhiteSpace(cors)).ToList(),
                 AllowOfflineAccess = AllowOfflineAccess,
                 AllowPlainTextPkce = AllowPlainTextPkce,

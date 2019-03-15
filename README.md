@@ -6,6 +6,12 @@
 |---|---|
 | Ubuntu 16.04 | [![Build Status](https://dev.azure.com/zlzforever/IdentityServer4.Admin/_apis/build/status/Ids4.Admin%20Build)](https://dev.azure.com/zlzforever/IdentityServer4.Admin/_build/latest?definitionId=2) |
 
+### 说明
+
+这是一个快速的开发的版本，没有设计、没有构架、没有性能优化。因为只是一个管理平台，所以对管理的性能需求并不高，并不会影响 IDS4 对授权接口、验证接口的性能。所以如果有代码洁癖的可以略过本项目。
+
+在我有时间后可能会重构一版，或者有意向一起参于这个项目的可以发 PR 给我。
+
 ### How to use
 
 #### Install Docker-CE

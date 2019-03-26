@@ -161,10 +161,8 @@ namespace IdentityServer4.Admin
 
             using (IServiceScope scope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
-                if (scope.ServiceProvider.GetRequiredService<AdminDbContext>().Database.EnsureCreated())
-                {
-                    logger.LogInformation("Created database success");
-                }
+                scope.ServiceProvider.GetRequiredService<AdminDbContext>().Database.Migrate();
+                logger.LogInformation("Migrate database success");
             }
 
             using (IServiceScope scope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())

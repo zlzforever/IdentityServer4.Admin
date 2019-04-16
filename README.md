@@ -16,12 +16,6 @@
 
 #### Install Docker-CE
 
-1. Install docker-ce follow official document
-
-        https://docs.docker.com/install/
-
-2. *Change docker repository to Ali docker repository* because i only push to Ali repository
-
 #### Prepare SqlServer/MySql
 
 + Right now only support SqlServer/MySql
@@ -36,8 +30,8 @@ Then change `ConnectionString` to your database connection string in the appsett
 
 #### Pull & start docker images
 
-        $ sudo docker pull registry.cn-shanghai.aliyuncs.com/zlzforever/ids4admin:latest
-        $ sudo docker run -d --name ids4admin2 --restart always -e ADMIN_PASSWORD=1qazZAQ! -v ~/ids4admin2:/ids4admin2 -p 5566:7896 registry.cn-shanghai.aliyuncs.com/zlzforever/ids4admin /ids4admin2/appsettings.json
+        $ sudo docker pull zlzforever/ids4admin:latest
+        $ sudo docker run -d --name ids4admin2 --restart always -e ADMIN_PASSWORD=1qazZAQ! -v ~/ids4admin2:/ids4admin2 -p 5566:7896 zlzforever/ids4admin /ids4admin2/appsettings.json
         
 #### Start from browser
 

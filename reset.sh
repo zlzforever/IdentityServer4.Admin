@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-sudo docker stop ids4admin2
-sudo docker rm ids4admin2
+sudo docker stop ids4admin
+sudo docker rm ids4admin
 sudo docker pull zlzforever/ids4admin:latest
-sudo docker run -d --name ids4admin2 --restart always -e ADMIN_PASSWORD=1qazZAQ! -v ~/ids4admin2:/ids4admin2 -p 5566:7896 zlzforever/ids4admin /ids4admin2/appsettings.json
+sudo docker run -d --name ids4admin --restart always -e ADMIN_PASSWORD=1qazZAQ! -v ~/ids4admin:/ids4admin -p 6566:6566 zlzforever/ids4admin /ids4admin/appsettings.json

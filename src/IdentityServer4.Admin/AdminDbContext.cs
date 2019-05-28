@@ -100,7 +100,7 @@ namespace IdentityServer4.Admin
         public AdminDbContext CreateDbContext(string[] args)
         {
             var builder = new DbContextOptionsBuilder<AdminDbContext>();
-            builder.UseSqlServer(GetConnectionString(args.Length > 0 ? args[0] : "appsettings.json"));
+            builder.UseMySql(GetConnectionString(args.Length > 0 ? args[0] : "appsettings.json"));
 
             return new AdminDbContext(builder.Options, new ConfigurationStoreOptions(), new OperationalStoreOptions());
         }

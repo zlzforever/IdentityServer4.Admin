@@ -42,7 +42,7 @@ namespace IdentityServer4.Admin
                     config.AddJsonFile(configPath);
                     Log.Logger.Information($"Use config: {configPath}");
                 })
-                .UseStartup<Startup>().UseSerilog().UseUrls("http://0.0.0.0:7896");
+                .UseStartup<Startup>().UseSerilog().UseUrls("http://0.0.0.0:6566");
 
             var seed = args.Contains("/seed");
             if (seed)

@@ -8,6 +8,7 @@ using IdentityServer4.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using GrantTypes = IdentityServer4.Models.GrantTypes;
 
@@ -18,12 +19,14 @@ namespace IdentityServer4.Admin
         private readonly ILogger _logger;
         private readonly IServiceProvider _serviceProvider;
         private readonly AdminDbContext _dbContext;
+        private readonly bool _isDev;
 
         public SeedData(ILogger logger, IServiceProvider serviceProvider)
         {
             _logger = logger;
             _serviceProvider = serviceProvider;
             _dbContext = (AdminDbContext) serviceProvider.GetRequiredService<IDbContext>();
+            _isDev = serviceProvider.GetRequiredService<IHostingEnvironment>().IsDevelopment();
         }
 
         public void EnsureData()
@@ -79,6 +82,45 @@ namespace IdentityServer4.Admin
             }
             else
             {
+                if (_isDev)
+                {
+                    var userMgr = _serviceProvider.GetRequiredService<UserManager<User>>();
+                    var admin = userMgr.FindByNameAsync("admin").Result;
+                    if (admin != null)
+                    {
+                        var result = userMgr.DeleteAsync(admin).Result;
+                    }
+
+                    var user = new User
+                    {
+                        Id = Guid.NewGuid(),
+                        UserName = "admin",
+                        Email = "admin@ids4admin.com",
+                        EmailConfirmed = true,
+                        CreationTime = DateTime.Now
+                    };
+
+                    var password = _serviceProvider.GetRequiredService<IConfiguration>()["ADMIN_PASSWORD"];
+                    if (string.IsNullOrWhiteSpace(password))
+                    {
+                        password = "1qazZAQ!";
+                    }
+
+                    var identityResult = userMgr.CreateAsync(user, password).Result;
+                    if (!identityResult.Succeeded)
+                    {
+                        throw new IdentityServer4AdminException("Create super admin user failed");
+                    }
+
+                    identityResult = userMgr.AddToRoleAsync(user, AdminConsts.AdminName).Result;
+                    if (!identityResult.Succeeded)
+                    {
+                        throw new IdentityServer4AdminException("Add super admin user to role failed");
+                    }
+
+                    Commit();
+                }
+
                 _logger.LogInformation("Ignore seed database...");
             }
 
@@ -88,28 +130,22 @@ namespace IdentityServer4.Admin
             {
                 for (int i = 0; i < testUserCount; ++i)
                 {
-                    try
+                    var user = new User
                     {
-                        var user = new User
-                        {
-                            Id = Guid.NewGuid(),
-                            UserName = "testuser" + i,
-                            Email = "testuser" + i + "@ids4admin.com",
-                            EmailConfirmed = true,
-                            CreationTime = DateTime.Now
-                        };
+                        Id = Guid.NewGuid(),
+                        UserName = "testuser" + i,
+                        Email = "testuser" + i + "@ids4admin.com",
+                        EmailConfirmed = true,
+                        CreationTime = DateTime.Now
+                    };
 
-                        var password = _serviceProvider.GetRequiredService<IConfiguration>()["ADMIN_PASSWORD"];
-                        if (string.IsNullOrWhiteSpace(password))
-                        {
-                            password = "1qazZAQ!";
-                        }
-
-                        var result = userMgr2.CreateAsync(user, password).Result;
-                    }
-                    catch
+                    var password = _serviceProvider.GetRequiredService<IConfiguration>()["ADMIN_PASSWORD"];
+                    if (string.IsNullOrWhiteSpace(password))
                     {
+                        password = "1qazZAQ!";
                     }
+
+                    userMgr2.CreateAsync(user, password).GetAwaiter().GetResult();
                 }
             }
 
@@ -180,7 +216,8 @@ namespace IdentityServer4.Admin
         {
             return new List<ApiResource>
             {
-                new ApiResource("api1", "My API")
+                new ApiResource("api1", "My API"),
+                new ApiResource("western-research-api", "western-research-api")
             };
         }
 
@@ -190,7 +227,10 @@ namespace IdentityServer4.Admin
             return new List<IdentityResource>
             {
                 new IdentityResources.OpenId(),
-                new IdentityResources.Profile()
+                new IdentityResources.Profile(),
+                new IdentityResources.Email(),
+                new IdentityResources.Phone(),
+                new IdentityResource("role", "Your roles", new[] {"role"})
             };
         }
 
@@ -214,7 +254,7 @@ namespace IdentityServer4.Admin
                     },
 
                     // scopes that client has access to
-                    AllowedScopes = { "api1" }
+                    AllowedScopes = {"api1"}
                 },
                 // resource owner password grant client
                 new Client
@@ -226,7 +266,7 @@ namespace IdentityServer4.Admin
                     {
                         new Secret("secret".Sha256())
                     },
-                    AllowedScopes = { "api1" }
+                    AllowedScopes = {"api1"}
                 },
                 // OpenID Connect hybrid flow client (MVC)
                 new Client
@@ -240,8 +280,8 @@ namespace IdentityServer4.Admin
                         new Secret("secret".Sha256())
                     },
 
-                    RedirectUris           = { "http://localhost:5002/signin-oidc" },
-                    PostLogoutRedirectUris = { "http://localhost:5002/signout-callback-oidc" },
+                    RedirectUris = {"http://localhost:5002/signin-oidc"},
+                    PostLogoutRedirectUris = {"http://localhost:5002/signout-callback-oidc"},
 
                     AllowedScopes =
                     {
@@ -261,15 +301,37 @@ namespace IdentityServer4.Admin
                     RequirePkce = true,
                     RequireClientSecret = false,
 
-                    RedirectUris =           { "http://localhost:5003/callback.html" },
-                    PostLogoutRedirectUris = { "http://localhost:5003/index.html" },
-                    AllowedCorsOrigins =     { "http://localhost:5003" },
+                    RedirectUris = {"http://localhost:5003/callback.html"},
+                    PostLogoutRedirectUris = {"http://localhost:5003/index.html"},
+                    AllowedCorsOrigins = {"http://localhost:5003"},
 
                     AllowedScopes =
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         "api1"
+                    }
+                },
+                new Client
+                {
+                    ClientId = "western-research",
+                    ClientName = "western-research",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+                    AllowedCorsOrigins = {"http://localhost:6568"},
+                    RedirectUris = {"http://localhost:6568/signin-oidc"},
+                    PostLogoutRedirectUris = {"http://localhost:6568/signout-callback-oidc"},
+                    RequireConsent = true,
+                    AllowOfflineAccess = false,
+                    AccessTokenLifetime = 3600 * 24 * 7,
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.Email,
+                        IdentityServerConstants.StandardScopes.Phone,
+                        "role",
+                        "western-research-api"
                     }
                 }
             };

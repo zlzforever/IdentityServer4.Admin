@@ -42,7 +42,15 @@ namespace IdentityServer4.Admin.Controllers
                 Name = dto.Name,
                 Description = dto.Description?.Trim(),
                 DisplayName = string.IsNullOrWhiteSpace(dto.DisplayName) ? dto.Name : dto.DisplayName?.Trim(),
-                Enabled = dto.Enabled
+                Enabled = dto.Enabled,
+                Scopes = new List<ApiScope>
+                {
+                    new ApiScope
+                    {
+                        Name = dto.Name,
+                        DisplayName = string.IsNullOrWhiteSpace(dto.DisplayName) ? dto.Name : dto.DisplayName?.Trim(),
+                    }
+                }
             };
             var context = (DbContext) _dbContext;
             var transaction = context.Database.BeginTransaction();

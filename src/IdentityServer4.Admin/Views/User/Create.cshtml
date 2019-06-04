@@ -16,7 +16,7 @@
         <form action="/user/create?returnUrl=@ViewData["ReturnUrl"]" method="post">
             @await Html.PartialAsync("_ValidationSummary")
             @await Html.PartialAsync("_Information")
-               <div class="box-body">
+            <div class="box-body">
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
@@ -31,6 +31,14 @@
                             <input asp-for="Email"
                                    class="form-control" autocomplete="false" type="text">
                             <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input asp-for="Password" 
+                                   class="form-control" autocomplete="false" type="password">
+                            <span asp-validation-for="Password" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
@@ -132,6 +140,7 @@
     </div>
     <!-- /.box -->
 </div>
+
 @section scripts
 {
     <script>

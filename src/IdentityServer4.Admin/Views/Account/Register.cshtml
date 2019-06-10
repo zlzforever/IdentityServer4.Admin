@@ -19,22 +19,22 @@
         <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
             <div class="form-group has-feedback">
                 <label>用户名</label>
-                <input asp-for="UserName" type="text" class="form-control">
+                <input asp-for="UserName" type="text" class="form-control"/>
                 <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
             <div class="form-group has-feedback">
                 <label>密码</label>
-                <input asp-for="Password" class="form-control">
+                <input asp-for="Password" class="form-control"/>
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group has-feedback">
                 <label>重复密码</label>
-                <input asp-for="ConfirmPassword" type="password" class="form-control">
+                <input asp-for="ConfirmPassword" type="password" class="form-control"/>
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
             <div class="row form-group has-feedback">
                 <div class="col-md-8">
-                    <input asp-for="VerificationCode" type="text" class="form-control">
+                    <input asp-for="VerificationCode" type="text" class="form-control"/>
                     <span asp-validation-for="VerificationCode" class="text-danger"></span>
                 </div>
                 <div class="col-md-4">

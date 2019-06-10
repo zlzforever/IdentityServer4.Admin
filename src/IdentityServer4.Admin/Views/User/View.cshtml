@@ -27,12 +27,12 @@
                             @if (Model.UserName == AdminConsts.AdminName)
                             {
                                 <input asp-for="UserName"
-                                       class="form-control" autocomplete="false" type="text" readonly="readonly">
+                                       class="form-control" autocomplete="false" type="text" readonly="readonly"/>
                             }
                             else
                             {
                                 <input asp-for="UserName"
-                                       class="form-control" autocomplete="false" type="text">
+                                       class="form-control" autocomplete="false" type="text"/>
                             }
                             <span asp-validation-for="UserName" class="text-danger"></span>
                         </div>
@@ -41,7 +41,7 @@
                         <div class="form-group">
                             <label>Email</label>
                             <input asp-for="Email"
-                                   class="form-control" autocomplete="false" type="text">
+                                   class="form-control" autocomplete="false" type="text"/>
                             <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
                     </div>
@@ -49,18 +49,18 @@
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label>LastName</label>
-                            <input asp-for="LastName"
-                                   class="form-control" autocomplete="false" type="text">
-                            <span asp-validation-for="LastName" class="text-danger"></span>
+                            <label>GivenName</label>
+                            <input asp-for="GivenName"
+                                   class="form-control" autocomplete="false" type="text"/>
+                            <span asp-validation-for="GivenName" class="text-danger"></span>
                         </div>
-                    </div>
+                    </div>                    
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label>FirstName</label>
-                            <input asp-for="FirstName"
-                                   class="form-control" autocomplete="false" type="text">
-                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                            <label>FamilyName</label>
+                            <input asp-for="FamilyName"
+                                   class="form-control" autocomplete="false" type="text"/>
+                            <span asp-validation-for="FamilyName" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
@@ -69,14 +69,14 @@
                         <div class="form-group">
                             <label>NickName</label>
                             <input asp-for="NickName"
-                                   class="form-control" autocomplete="false" type="text">
+                                   class="form-control" autocomplete="false" type="text"/>
                             <span asp-validation-for="NickName" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <label>Slogan</label>
                         <input asp-for="Slogan"
-                               class="form-control" autocomplete="false" type="text">
+                               class="form-control" autocomplete="false" type="text"/>
                         <span asp-validation-for="Slogan" class="text-danger"></span>
                     </div>
                 </div>
@@ -85,7 +85,7 @@
                         <div class="form-group">
                             <label>PhoneNumber</label>
                             <input asp-for="PhoneNumber"
-                                   class="form-control" autocomplete="false" type="text">
+                                   class="form-control" autocomplete="false" type="text"/>
                             <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                         </div>
                     </div>
@@ -93,7 +93,7 @@
                         <div class="form-group">
                             <label>OfficePhone</label>
                             <input asp-for="OfficePhone"
-                                   class="form-control" autocomplete="false" type="text">
+                                   class="form-control" autocomplete="false" type="text"/>
                             <span asp-validation-for="OfficePhone" class="text-danger"></span>
                         </div>
                     </div>
@@ -101,7 +101,7 @@
                         <div class="form-group">
                             <label>Location</label>
                             <input asp-for="Location"
-                                   class="form-control" autocomplete="false" type="text">
+                                   class="form-control" autocomplete="false" type="text"/>
                             <span asp-validation-for="Location" class="text-danger"></span>
                         </div>
                     </div>

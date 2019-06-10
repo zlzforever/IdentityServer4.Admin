@@ -13,16 +13,16 @@ namespace IdentityServer4.Admin.Entities
     public class User : IdentityUser<Guid>, IEntity<Guid>
     {
         /// <summary>
-        /// 姓
-        /// </summary>
-        [StringLength(256)]
-        public string FirstName { get; set; }
-
-        /// <summary>
         /// 名
         /// </summary>
         [StringLength(256)]
-        public string LastName { get; set; }
+        public string GivenName { get; set; }
+
+        /// <summary>
+        /// 姓
+        /// </summary>
+        [StringLength(256)]
+        public string FamilyName { get; set; }
 
         /// <summary>
         /// 昵称

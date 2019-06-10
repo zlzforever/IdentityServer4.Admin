@@ -85,12 +85,12 @@ namespace IdentityServer4.Admin.Infrastructure
                     }
                     case JwtClaimTypes.FamilyName:
                     {
-                        context.IssuedClaims.Add(new Claim(JwtClaimTypes.FamilyName, user.LastName ?? ""));
+                        context.IssuedClaims.Add(new Claim(JwtClaimTypes.FamilyName, user.FamilyName ?? ""));
                         continue;
                     }
                     case JwtClaimTypes.GivenName:
                     {
-                        context.IssuedClaims.Add(new Claim(JwtClaimTypes.GivenName, user.FirstName ?? ""));
+                        context.IssuedClaims.Add(new Claim(JwtClaimTypes.GivenName, user.GivenName ?? ""));
                         continue;
                     }
                     case JwtClaimTypes.PhoneNumber:

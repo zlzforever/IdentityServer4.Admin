@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace IdentityServer4.Admin.Migrations
 {
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -52,8 +52,8 @@ namespace IdentityServer4.Admin.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    FirstName = table.Column<string>(maxLength: 256, nullable: true),
-                    LastName = table.Column<string>(maxLength: 256, nullable: true),
+                    GivenName = table.Column<string>(maxLength: 256, nullable: true),
+                    FamilyName = table.Column<string>(maxLength: 256, nullable: true),
                     NickName = table.Column<string>(maxLength: 256, nullable: true),
                     Slogan = table.Column<string>(maxLength: 256, nullable: true),
                     WebSite = table.Column<string>(maxLength: 500, nullable: true),

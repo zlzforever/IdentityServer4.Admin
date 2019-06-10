@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IdentityServer4.Admin.Migrations
 {
     [DbContext(typeof(AdminDbContext))]
-    [Migration("20190523025021_init")]
-    partial class init
+    [Migration("20190610135013_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -79,7 +79,10 @@ namespace IdentityServer4.Admin.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
-                    b.Property<string>("FirstName")
+                    b.Property<string>("FamilyName")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("GivenName")
                         .HasMaxLength(256);
 
                     b.Property<string>("Icon")
@@ -88,9 +91,6 @@ namespace IdentityServer4.Admin.Migrations
                     b.Property<DateTime?>("LastModificationTime");
 
                     b.Property<string>("LastModifierUserId")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("LastName")
                         .HasMaxLength(256);
 
                     b.Property<string>("Location")

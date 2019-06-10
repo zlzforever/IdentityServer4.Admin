@@ -27,14 +27,14 @@ namespace IdentityServer4.Admin.ViewModels.Account
         public string Roles { get; set; }
 
         /// <summary>
-        /// 姓
-        /// </summary>
-        public string FirstName { get; set; }
-
-        /// <summary>
         /// 名
         /// </summary>
-        public string LastName { get; set; }
+        public string GivenName { get; set; }
+
+        /// <summary>
+        /// 姓
+        /// </summary>
+        public string FamilyName { get; set; }
 
         /// <summary>
         /// 职位

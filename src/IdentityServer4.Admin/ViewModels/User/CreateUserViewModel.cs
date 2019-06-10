@@ -35,16 +35,16 @@ namespace IdentityServer4.Admin.ViewModels.User
         public string PhoneNumber { get; set; }
 
         /// <summary>
-        /// 姓
-        /// </summary>
-        [StringLength(50)]
-        public string FirstName { get; set; }
-
-        /// <summary>
         /// 名
         /// </summary>
         [StringLength(50)]
-        public string LastName { get; set; }
+        public string GivenName { get; set; }
+
+        /// <summary>
+        /// 姓
+        /// </summary>
+        [StringLength(50)]
+        public string FamilyName { get; set; }
 
         /// <summary>
         /// 职位

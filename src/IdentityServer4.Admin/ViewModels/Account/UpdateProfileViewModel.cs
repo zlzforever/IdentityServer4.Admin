@@ -25,13 +25,13 @@ namespace IdentityServer4.Admin.ViewModels.Account
         /// 姓
         /// </summary>
         [StringLength(50)]
-        public string FirstName { get; set; }
+        public string GivenName { get; set; }
 
         /// <summary>
         /// 名
         /// </summary>
         [StringLength(50)]
-        public string LastName { get; set; }
+        public string FamilyName { get; set; }
 
         /// <summary>
         /// 昵称

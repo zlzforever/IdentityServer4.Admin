@@ -3,7 +3,7 @@ namespace IdentityServer4.Admin.Infrastructure
     public class PagedQuery
     {
         private int _page = 1;
-        private int _size = 10;
+        private int _size = 15;
 
         public int? Page
         {

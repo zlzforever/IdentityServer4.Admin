@@ -51,7 +51,13 @@ namespace IdentityServer4.Admin.Infrastructure
                     claims.Add(claim);
                 }
             }
-
+            foreach (var resource in context.RequestedResources.ApiResources)
+            {
+                foreach (var claim in resource.UserClaims)
+                {
+                    claims.Add(claim);
+                }
+            }
             context.IssuedClaims = context.IssuedClaims ?? new List<Claim>();
 
             foreach (var claim in claims)

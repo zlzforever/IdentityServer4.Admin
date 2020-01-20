@@ -13,7 +13,9 @@ ProjectSection(SolutionItems) = preProject
 	azure-pipelines.yml = azure-pipelines.yml
 	restart.sh = restart.sh
 	reset.sh = reset.sh
-	publishToDockerhub.sh = publishToDockerhub.sh
+	publish.sh = publish.sh
+	publish_private.sh = publish_private.sh
+	nuget.config = nuget.config
 EndProjectSection
 EndProject
 Global

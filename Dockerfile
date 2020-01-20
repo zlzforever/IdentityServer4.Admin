@@ -1,5 +1,5 @@
 # First stage of multi-stage build
-FROM microsoft/dotnet:2.2-sdk AS build-env
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
 WORKDIR /app
 # copy the contents of agent working directory on host to workdir in container
 COPY . ./
@@ -10,12 +10,12 @@ RUN dotnet restore
 RUN dotnet publish -c Release -o out
 
 # Second stage - Build runtime image
-FROM microsoft/dotnet:2.2-aspnetcore-runtime
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 WORKDIR /app
-COPY --from=build-env /app/src/IdentityServer4.Admin/out .
-#RUN mv /etc/apt/sources.list /etc/apt/sources.list.bak && \
-#    echo "deb http://mirrors.aliyun.com/debian/ jessie main non-free contrib" >/etc/apt/sources.list && \
-#    echo "deb-src http://mirrors.aliyun.com/debian/ jessie main non-free contrib" >>/etc/apt/sources.list  
-## RUN apt-get update && apt-get install -y libfontconfig1 && apt-get install -y fontconfig
-#RUN apt-get update && apt-get install -y libfontconfig1
+COPY --from=build-env /app/out .
+RUN mv /etc/apt/sources.list /etc/apt/sources.list.bak && \
+    echo "deb http://mirrors.aliyun.com/debian/ jessie main non-free contrib" >/etc/apt/sources.list && \
+    echo "deb-src http://mirrors.aliyun.com/debian/ jessie main non-free contrib" >>/etc/apt/sources.list  
+# RUN apt-get update && apt-get install -y libfontconfig1 && apt-get install -y fontconfig
+RUN apt-get update && apt-get install -y libfontconfig1
 ENTRYPOINT ["dotnet", "IdentityServer4.Admin.dll"]

@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using AutoMapper;
 using IdentityServer4.Admin.Infrastructure;
 using IdentityServer4.Admin.ViewModels.User;
 using Microsoft.AspNetCore.Authorization;
@@ -35,7 +34,7 @@ namespace IdentityServer4.Admin.Controllers
                     return View("View", dto);
                 }
 
-                Mapper.Map(dto, user);
+                _mapper.Map(dto, user);
 
                 var result = await _userManager.UpdateAsync(user);
                 if (!result.Succeeded)

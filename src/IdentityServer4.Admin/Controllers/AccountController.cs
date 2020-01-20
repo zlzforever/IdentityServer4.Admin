@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
+using AutoMapper;
 using IdentityModel;
 using IdentityServer4.Admin.Entities;
 using IdentityServer4.Admin.Infrastructure;
@@ -30,6 +31,7 @@ namespace IdentityServer4.Admin.Controllers
         private readonly IAuthenticationSchemeProvider _schemeProvider;
         private readonly IEventService _events;
         private readonly AdminOptions _options;
+        private readonly IMapper _mapper;
 
         public AccountController(
             UserManager<User> userManager,
@@ -38,6 +40,7 @@ namespace IdentityServer4.Admin.Controllers
             IClientStore clientStore,
             IAuthenticationSchemeProvider schemeProvider,
             IEventService events,
+            IMapper mapper,
             ILoggerFactory loggerFactory, AdminOptions options) : base(loggerFactory)
         {
             _userManager = userManager;
@@ -47,6 +50,7 @@ namespace IdentityServer4.Admin.Controllers
             _schemeProvider = schemeProvider;
             _events = events;
             _options = options;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -129,7 +133,6 @@ namespace IdentityServer4.Admin.Controllers
             return Redirect("~/");
         }
 
-      
 
         /*****************************************/
         /* helper APIs for the AccountController */
@@ -197,7 +200,6 @@ namespace IdentityServer4.Admin.Controllers
             return vm;
         }
 
-        
 
         private async Task<IActionResult> ProcessWindowsLoginAsync(string returnUrl)
         {
@@ -226,9 +228,15 @@ namespace IdentityServer4.Admin.Controllers
                 if (_options.IncludeWindowsGroups)
                 {
                     var wi = wp.Identity as WindowsIdentity;
-                    var groups = wi.Groups.Translate(typeof(NTAccount));
-                    var roles = groups.Select(x => new Claim(JwtClaimTypes.Role, x.Value));
-                    id.AddClaims(roles);
+                    if (wi != null && wi.Groups != null)
+                    {
+                        var groups = wi.Groups.Translate(typeof(NTAccount));
+                        if (groups != null)
+                        {
+                            var roles = groups.Select(x => new Claim(JwtClaimTypes.Role, x.Value));
+                            id.AddClaims(roles);
+                        }
+                    }
                 }
 
                 await HttpContext.SignInAsync(

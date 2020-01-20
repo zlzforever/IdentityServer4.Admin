@@ -5,7 +5,6 @@ using System.Linq;
 using IdentityServer4.Admin.Infrastructure;
 using IdentityServer4.EntityFramework.Mappers;
 using IdentityServer4.Models;
-using Microsoft.EntityFrameworkCore.Design;
 using GrantTypes = IdentityServer4.Admin.Infrastructure.GrantTypes;
 
 namespace IdentityServer4.Admin.ViewModels.Client

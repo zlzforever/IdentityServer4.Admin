@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using IdentityServer4.Admin.Infrastructure;
 using IdentityServer4.Admin.ViewModels.Client;
 using IdentityServer4.EntityFramework.Entities;
@@ -10,10 +9,7 @@ using IdentityServer4.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Logging;
-using X.PagedList;
-using Secret = IdentityServer4.Models.Secret;
 
 namespace IdentityServer4.Admin.Controllers
 {

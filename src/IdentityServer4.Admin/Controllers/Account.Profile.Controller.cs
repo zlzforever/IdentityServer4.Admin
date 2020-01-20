@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using AutoMapper;
 using IdentityServer4.Admin.Entities;
 using IdentityServer4.Admin.ViewModels.Account;
 using Microsoft.AspNetCore.Mvc;
@@ -49,12 +48,12 @@ namespace IdentityServer4.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                Mapper.Map(dto, user);
+                _mapper.Map(dto, user);
                 await _userManager.UpdateAsync(user);
             }
 
             var viewModel = await BuildProfileViewModelAsync(user);
-            Mapper.Map(dto, viewModel);
+            _mapper.Map(dto, viewModel);
             return RedirectToAction("Profile");
         }
 

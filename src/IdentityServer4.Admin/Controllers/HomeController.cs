@@ -5,9 +5,9 @@ using IdentityServer4.Admin.ViewModels;
 using IdentityServer4.Admin.ViewModels.Home;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace IdentityServer4.Admin.Controllers
@@ -16,10 +16,10 @@ namespace IdentityServer4.Admin.Controllers
     {
         private readonly IDbContext _dbContext;
         private readonly IIdentityServerInteractionService _interaction;
-        private readonly IHostingEnvironment _environment;
+        private readonly IHostEnvironment _environment;
 
         public HomeController(IIdentityServerInteractionService interaction, IDbContext dbContext,
-            IHostingEnvironment environment, ILoggerFactory loggerFactory) : base(loggerFactory)
+            IHostEnvironment environment, ILoggerFactory loggerFactory) : base(loggerFactory)
         {
             _dbContext = dbContext;
             _interaction = interaction;
@@ -35,7 +35,6 @@ namespace IdentityServer4.Admin.Controllers
         [Authorize]
         public async Task<IActionResult> Index()
         {
-            var userId = User.FindFirst("sub").Value;
             if (HttpContext.User.IsInRole(AdminConsts.AdminName))
             {
                 var viewModel = new DashboardViewModel

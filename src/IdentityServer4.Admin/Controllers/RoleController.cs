@@ -21,13 +21,16 @@ namespace IdentityServer4.Admin.Controllers
     {
         private readonly RoleManager<Role> _roleManager;
         private readonly IDbContext _dbContext;
-
+        private readonly IMapper _mapper;
+        
         public RoleController(RoleManager<Role> roleManager,
             IDbContext dbContext,
+            IMapper  mapper,
             ILoggerFactory loggerFactory) : base(loggerFactory)
         {
             _roleManager = roleManager;
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -44,9 +47,9 @@ namespace IdentityServer4.Admin.Controllers
             var queryResult = await queryable.OrderBy(x => x.CreationTime).AsNoTracking()
                 .ToPagedListAsync(input.GetPage(), input.GetSize());
             var itemViewModels = new List<ListRoleItemViewModel>();
-            foreach (var user in queryResult)
+            foreach (var role in queryResult)
             {
-                var dto = Mapper.Map<ListRoleItemViewModel>(user);
+                var dto = _mapper.Map<ListRoleItemViewModel>(role);
                 itemViewModels.Add(dto);
             }
 
@@ -67,7 +70,7 @@ namespace IdentityServer4.Admin.Controllers
             }
 
             ViewData["ReturnUrl"] = returnUrl;
-            return View("View", Mapper.Map<RoleViewModel>(role));
+            return View("View", _mapper.Map<RoleViewModel>(role));
         }
     }
 }

@@ -26,8 +26,9 @@ namespace IdentityServer4.Admin.Controllers
 
             var scopes = await _dbContext.ApiScopes.Where(x => x.ApiResourceId == id).ToListAsync();
             var ids = scopes.Select(x => x.Id);
-            var claims = await _dbContext.ApiScopeClaims.Where(x => ids.Contains(x.ApiScopeId))
-                .GroupBy(x => x.ApiScopeId).ToDictionaryAsync(g => g.Key);
+            var claims = _dbContext.ApiScopeClaims.Where(x => ids.Contains(x.ApiScopeId))
+                .ToList()
+                .GroupBy(x => x.ApiScopeId).ToDictionary(g => g.Key);
 
             var viewModel = new List<ListApiResourceScopeViewModel>();
             foreach (var scope in scopes)

@@ -21,13 +21,16 @@ namespace IdentityServer4.Admin.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly IDbContext _dbContext;
-
+        private readonly IMapper _mapper;
+        
         public UserController(UserManager<User> userManager,
             IDbContext dbContext,
+            IMapper  mapper,
             ILoggerFactory loggerFactory) : base(loggerFactory)
         {
             _userManager = userManager;
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
         [Authorize(Roles = AdminConsts.AdminName)]
@@ -53,7 +56,7 @@ namespace IdentityServer4.Admin.Controllers
             var userItemViewModels = new List<ListUserItemViewModel>();
             foreach (var user in queryResult)
             {
-                var dto = Mapper.Map<ListUserItemViewModel>(user);
+                var dto = _mapper.Map<ListUserItemViewModel>(user);
                 dto.IsLockedOut = await _userManager.IsLockedOutAsync(user);
                 //TODO: 需要优化成一次查询
                 dto.Roles = string.Join("; ", await _userManager.GetRolesAsync(user));
@@ -77,7 +80,7 @@ namespace IdentityServer4.Admin.Controllers
             }
 
             ViewData["ReturnUrl"] = returnUrl;
-            return View("View", Mapper.Map<ViewUserViewModel>(user));
+            return View("View", _mapper.Map<ViewUserViewModel>(user));
         }
     }
 }

@@ -29,8 +29,8 @@ namespace IdentityServer4.Admin.Controllers
             var queryable = _dbContext.IdentityResources.AsQueryable().OrderBy(x => x.Created);
             var queryResult = await queryable.ToPagedListAsync(input.GetPage(), input.GetSize());
             var ids = await queryResult.Select(x => x.Id).ToListAsync();
-            var claims = await _dbContext.IdentityClaims.Where(x => ids.Contains(x.IdentityResourceId))
-                .GroupBy(x => x.IdentityResourceId).ToDictionaryAsync(g => g.Key);
+            var claims = _dbContext.IdentityClaims.Where(x => ids.Contains(x.IdentityResourceId))
+                .ToList().GroupBy(x => x.IdentityResourceId).ToDictionary(g => g.Key);
             var viewModel = new StaticPagedList<ListIdentityResourceItemViewModel>(queryResult.Select(x =>
                     new ListIdentityResourceItemViewModel
                     {

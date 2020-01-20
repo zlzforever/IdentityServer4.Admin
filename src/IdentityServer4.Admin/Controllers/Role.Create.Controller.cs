@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using AutoMapper;
 using IdentityServer4.Admin.Entities;
 using IdentityServer4.Admin.ViewModels.Role;
 using Microsoft.AspNetCore.Mvc;
@@ -30,7 +29,7 @@ namespace IdentityServer4.Admin.Controllers
                 return View("Create", dto);
             }
 
-            var role = Mapper.Map<Role>(dto);
+            var role = _mapper.Map<Role>(dto);
             string normalizedName = _roleManager.NormalizeKey(role.Name);
             if (await _roleManager.Roles.AnyAsync(u => u.NormalizedName == normalizedName))
             {

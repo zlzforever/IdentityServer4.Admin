@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using IdentityServer4.Admin.Infrastructure;
 using IdentityServer4.Admin.ViewModels.Client;
 using IdentityServer4.Models;
@@ -232,7 +231,7 @@ namespace IdentityServer4.Admin.Controllers
                 sortDict.Add(key, dict[key]);
             }
 
-            return new JsonResult(dict);
+            return new JsonResult(sortDict);
         }
     }
 }

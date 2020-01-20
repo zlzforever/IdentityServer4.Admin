@@ -1,23 +1,19 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using AutoMapper;
 using IdentityServer4.Admin.Entities;
 using IdentityServer4.Admin.Infrastructure;
-using IdentityServer4.Admin.ViewModels.Account;
-using IdentityServer4.Admin.ViewModels.Client;
-using IdentityServer4.Admin.ViewModels.Role;
-using IdentityServer4.Admin.ViewModels.User;
-using IdentityServer4.EntityFramework.Entities;
 using IdentityServer4.ResponseHandling;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using TokenResponseGenerator = IdentityServer4.Admin.Infrastructure.TokenResponseGenerator;
 
@@ -26,10 +22,10 @@ namespace IdentityServer4.Admin
     public class Startup
     {
         private readonly IConfiguration _configuration;
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IHostEnvironment _hostingEnvironment;
         private readonly AdminOptions _options;
 
-        public Startup(IConfiguration configuration, IHostingEnvironment env)
+        public Startup(IConfiguration configuration, IHostEnvironment env)
         {
             _configuration = configuration;
             _hostingEnvironment = env;
@@ -39,18 +35,24 @@ namespace IdentityServer4.Admin
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-             
+            services.AddAutoMapper(typeof(AdminOptions));
+
             // Add configuration
-            services.AddSingleton<AdminOptions>();
+            services.AddScoped<AdminOptions>();
 
             // Add MVC
-            services.AddMvc()
+            services.AddControllersWithViews()
                 //.AddMvcOptions(o => o.Filters.Add<HttpGlobalExceptionFilter>())
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+                .AddRazorRuntimeCompilation();
+
+            services.AddHealthChecks();
+
+
+            services.AddResponseCompression();
+            services.AddResponseCaching();
 
             services.AddAuthorization();
-
-            services.AddSession();
 
             // Add DbContext            
             Action<DbContextOptionsBuilder> dbContextOptionsBuilder;
@@ -115,9 +117,6 @@ namespace IdentityServer4.Admin
                 }).AddResourceStore<EfResourceStore>();
             builder.AddProfileService<ProfileService>();
             builder.Services.AddTransient<ITokenResponseGenerator, TokenResponseGenerator>();
-
-            // Configure AutoMapper
-            ConfigureAutoMapper();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -134,7 +133,6 @@ namespace IdentityServer4.Admin
                 app.UseHsts();
             }
 
-            app.UseSession();
             app.UseHttpsRedirection();
             if (_options.StorageRoot == "wwwroot")
             {
@@ -150,22 +148,37 @@ namespace IdentityServer4.Admin
             }
 
             app.UseIdentityServer();
-            app.UseMvc(routes =>
+
+            app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
-                    "default",
-                    "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            app.UseResponseCompression();
+            app.UseResponseCaching();
         }
 
         private void PrePareDatabase(IServiceProvider serviceProvider)
         {
             var logger = serviceProvider.GetRequiredService<ILogger<Startup>>();
-            logger.LogInformation("Configuration: " + _options.Version);
-
             using (IServiceScope scope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
-                scope.ServiceProvider.GetRequiredService<AdminDbContext>().Database.Migrate();
+                var database = scope.ServiceProvider.GetRequiredService<AdminDbContext>().Database;
+
+                var migrations = database.GetPendingMigrations().ToArray();
+                if (migrations.Length > 0)
+                {
+                    database.Migrate();
+                    logger.LogInformation($"已提交{migrations.Length}条挂起的迁移记录：{string.Join(",", migrations)}");
+                }
+
                 logger.LogInformation("Migrate database success");
             }
 
@@ -173,21 +186,6 @@ namespace IdentityServer4.Admin
             {
                 new SeedData(logger, scope.ServiceProvider).EnsureData();
             }
-        }
-
-        private void ConfigureAutoMapper()
-        {
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<CreateUserViewModel, User>();
-                cfg.CreateMap<Role, RoleViewModel>();
-                cfg.CreateMap<Role, ViewUserRoleViewModel>();
-                cfg.CreateMap<RoleViewModel, Role>();
-                cfg.CreateMap<UpdateProfileViewModel, User>();
-                cfg.CreateMap<UpdateProfileViewModel, ProfileViewModel>();
-                cfg.CreateMap<User, ListUserItemViewModel>();
-                cfg.CreateMap<ViewUserViewModel, User>();
-            });
         }
     }
 }

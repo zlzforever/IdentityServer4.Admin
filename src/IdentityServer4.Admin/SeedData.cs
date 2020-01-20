@@ -26,7 +26,7 @@ namespace IdentityServer4.Admin
             _logger = logger;
             _serviceProvider = serviceProvider;
             _dbContext = (AdminDbContext) serviceProvider.GetRequiredService<IDbContext>();
-            _isDev = serviceProvider.GetRequiredService<IHostingEnvironment>().IsDevelopment();
+            _isDev = serviceProvider.GetRequiredService<IHostEnvironment>().IsDevelopment();
         }
 
         public void EnsureData()
@@ -88,7 +88,7 @@ namespace IdentityServer4.Admin
                     var admin = userMgr.FindByNameAsync("admin").Result;
                     if (admin != null)
                     {
-                        var result = userMgr.DeleteAsync(admin).Result;
+                        userMgr.DeleteAsync(admin).GetAwaiter().GetResult();
                     }
 
                     var user = new User

@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using AutoMapper;
 using IdentityServer4.Admin.Entities;
 using IdentityServer4.Admin.Infrastructure;
 using IdentityServer4.Admin.ViewModels.User;
@@ -33,7 +32,7 @@ namespace IdentityServer4.Admin.Controllers
                 return View("Create", dto);
             }
 
-            var user = Mapper.Map<User>(dto);
+            var user = _mapper.Map<User>(dto);
             var result = await _userManager.CreateAsync(user, dto.Password);
             if (result.Succeeded)
             {

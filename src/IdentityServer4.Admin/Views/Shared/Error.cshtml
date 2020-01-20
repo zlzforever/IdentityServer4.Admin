@@ -1,11 +1,10 @@
 @using IdentityServer4.Admin.Infrastructure
-@using Microsoft.AspNetCore.Hosting
+@using Microsoft.Extensions.Hosting
 @model IdentityServer4.Admin.ViewModels.ErrorViewModel
-@inject IHostingEnvironment Host
+@inject IHostEnvironment Host
 @inject AdminOptions Options;
 @{
     Layout = "_FrameworkLayout";
-    var error = Model?.Error?.Error;
     var errorDescription = Host.IsDevelopment() ? Model?.Error?.ErrorDescription : null;
     var requestId = Model?.Error?.RequestId;
 }

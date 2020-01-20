@@ -9,6 +9,7 @@ using IdentityServer4.Admin.ViewModels.Client;
 using IdentityServer4.Admin.ViewModels.Role;
 using IdentityServer4.Admin.ViewModels.User;
 using IdentityServer4.EntityFramework.Entities;
+using IdentityServer4.ResponseHandling;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -18,6 +19,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
+using TokenResponseGenerator = IdentityServer4.Admin.Infrastructure.TokenResponseGenerator;
 
 namespace IdentityServer4.Admin
 {
@@ -37,6 +39,7 @@ namespace IdentityServer4.Admin
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+             
             // Add configuration
             services.AddSingleton<AdminOptions>();
 
@@ -109,8 +112,9 @@ namespace IdentityServer4.Admin
                     options.ResolveDbContextOptions = (provider, b) => dbContextOptionsBuilder(b);
                     // this enables automatic token cleanup. this is optional.
                     options.EnableTokenCleanup = _options.EnableTokenCleanup;
-                });
+                }).AddResourceStore<EfResourceStore>();
             builder.AddProfileService<ProfileService>();
+            builder.Services.AddTransient<ITokenResponseGenerator, TokenResponseGenerator>();
 
             // Configure AutoMapper
             ConfigureAutoMapper();

@@ -365,9 +365,6 @@ namespace IdentityServer4.Admin.ViewModels.Client
                 ClientClaimsPrefix = ClientClaimsPrefix,
                 ClientId = ClientId,
                 ClientName = ClientName,
-
-//                ClientSecrets = dto.ClientSecrets.Split("\r\n", StringSplitOptions.RemoveEmptyEntries)
-//                    .Select(x => new Secret(x.Sha256())).ToList(),
                 ClientUri = ClientUri,
                 ConsentLifetime = ConsentLifetime,
                 Description = Description,
@@ -398,6 +395,15 @@ namespace IdentityServer4.Admin.ViewModels.Client
                 UserCodeType = UserCodeType,
                 UserSsoLifetime = UserSsoLifetime,
             };
+
+            var secrets = ClientSecrets?.Split("\r\n", StringSplitOptions.RemoveEmptyEntries)
+                .Select(x => new Secret(x.Sha256())).ToList();
+
+            if (secrets != null && secrets.Count == 0)
+            {
+                client.ClientSecrets = secrets;
+            }
+
             return client.ToEntity();
         }
 

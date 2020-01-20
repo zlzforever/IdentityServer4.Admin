@@ -5,6 +5,6 @@ cd ../..
 docker build -t ids4admin .
 docker tag ids4admin zlzforever/ids4admin:latest
 docker push zlzforever/ids4admin:latest
-tag=$(date +%Y%m%d%H%M%S)
+tag=$(date +%Y%m%d)
 docker tag ids4admin zlzforever/ids4admin:$tag
 docker push zlzforever/ids4admin:$tag

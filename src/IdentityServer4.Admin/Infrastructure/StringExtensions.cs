@@ -15,6 +15,11 @@ namespace IdentityServer4.Admin.Infrastructure
     /// </summary>
     public static class StringExtensions
     {
+        public static bool IsPresent(this string value)
+        {
+            return !string.IsNullOrWhiteSpace(value);
+        }
+        
         #region 正则表达式
 
         /// <summary>

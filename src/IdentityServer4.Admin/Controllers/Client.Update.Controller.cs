@@ -10,6 +10,7 @@ using IdentityServer4.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Logging;
 using X.PagedList;
 using Secret = IdentityServer4.Models.Secret;
@@ -48,14 +49,6 @@ namespace IdentityServer4.Admin.Controllers
             var transaction = context.Database.BeginTransaction();
             try
             {
-                bool updateSecret = false;
-                if (client.ClientSecrets != null && client.ClientSecrets.Any() &&
-                    client.ClientSecrets.First().Value != dto.ClientSecrets)
-                {
-                    updateSecret = true;
-                    _dbContext.ClientSecrets.RemoveRange(client.ClientSecrets);
-                }
-
                 if (client.AllowedGrantTypes != null && client.AllowedGrantTypes.Any())
                 {
                     _dbContext.ClientGrantTypes.RemoveRange(client.AllowedGrantTypes);
@@ -104,18 +97,44 @@ namespace IdentityServer4.Admin.Controllers
                 client.ClientId = newClient.ClientId;
                 client.ClientName = newClient.ClientName;
 
-                if (updateSecret)
+                if (client.ClientSecrets == null)
                 {
-                    client.ClientSecrets = new List<ClientSecret>
+                    client.ClientSecrets = new List<ClientSecret>();
+                }
+
+                var secrets = dto.ClientSecrets?.Split("\r\n", StringSplitOptions.RemoveEmptyEntries).ToList();
+                if (secrets != null)
+                {
+                    var excludeSecrets = new List<string>();
+                    foreach (var clientSecret in client.ClientSecrets)
                     {
-                        new ClientSecret
+                        if (secrets.All(x => x != clientSecret.Value))
                         {
-                            Client = client,
-                            Created = DateTime.Now,
-                            Type = "SharedSecret",
-                            Value = dto.ClientSecrets.Sha256()
+                            _dbContext.ClientSecrets.Remove(clientSecret);
                         }
-                    };
+                        else
+                        {
+                            excludeSecrets.Add(clientSecret.Value);
+                        }
+                    }
+
+                    excludeSecrets.ForEach(x => secrets.Remove(x));
+
+                    foreach (var secret in secrets)
+                    {
+                        var hash = secret.Sha256();
+                        // 添加新的密码
+                        if (client.ClientSecrets.All(x => x.Value != hash))
+                        {
+                            client.ClientSecrets.Add(
+                                new ClientSecret
+                                {
+                                    Client = client,
+                                    Created = DateTime.Now,
+                                    Value = hash
+                                });
+                        }
+                    }
                 }
 
                 client.ClientUri = newClient.ClientUri;
